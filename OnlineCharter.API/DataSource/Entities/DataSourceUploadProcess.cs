@@ -1,4 +1,5 @@
 ﻿using System;
+using Utils;
 
 namespace DataSource.Entities
 {
@@ -35,7 +36,7 @@ namespace DataSource.Entities
 
         public static DataSourceUploadProcess Create(int id, Guid dataSourceId)
         {
-            var now = DateTime.Now;
+            var now = SystemDateTime.Now;
 
             return new DataSourceUploadProcess(id, dataSourceId, now, now, DataSourceUploadProcessState.INIT);
         }
