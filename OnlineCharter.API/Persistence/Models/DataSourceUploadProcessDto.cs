@@ -1,9 +1,9 @@
 ﻿using System;
 
-using DataSourceUploadProcessState = DataSource.Entities.DataSourceUploadProcess.DataSourceUploadProcessState;
-
 namespace Persistence.Models
 {
+    using DataSourceUploadProcessState = DataSource.Entities.DataSourceUploadProcess.DataSourceUploadProcessState;
+
     public class DataSourceUploadProcessDto
     {
         public int Id { get; set; }

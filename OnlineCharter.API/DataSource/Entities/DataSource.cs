@@ -10,7 +10,7 @@ namespace DataSource.Entities
         public string Name { get; }
         public DateTime Created { get; }
         public string Location { get; }
-        public byte[] Value;
+        public byte[] Value { get; }
         public int UserId { get; }
         public JObject Schema { get; }
 
