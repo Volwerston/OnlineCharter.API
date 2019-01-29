@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="9.4.2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
   </ItemGroup>
 
   <ItemGroup>
