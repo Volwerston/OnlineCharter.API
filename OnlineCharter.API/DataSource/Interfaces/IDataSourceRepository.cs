@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DataSource.Interfaces
@@ -8,8 +9,8 @@ namespace DataSource.Interfaces
     public interface IDataSourceRepository
     {
         Task Create(DataSource dataSource);
-        Task Find(Guid id);
+        Task<DataSource> FindAsync(Guid id, bool downloadBinaries);
         Task Remove(DataSource dataSource);
-        Task FindAll(int userId);
+        Task<IList<DataSource>> FindAll(int userId, bool downloadBinaries);
     }
 }

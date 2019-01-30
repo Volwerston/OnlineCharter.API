@@ -13,7 +13,7 @@ namespace Persistence.Models
             _mongoDatabase = _mongoClient.GetDatabase(databaseName);
         }
 
-        private IMongoCollection<DataSource.Entities.DataSource> DataSources =>
-            _mongoDatabase.GetCollection<DataSource.Entities.DataSource>("DataSources");
+        public IMongoCollection<DataSourceDto> DataSources =>
+            _mongoDatabase.GetCollection<DataSourceDto>("DataSources");
     }
 }

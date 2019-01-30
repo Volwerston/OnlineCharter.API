@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DataSource.Interfaces;
 using Microsoft.WindowsAzure.Storage.Blob;
+using MongoDB.Driver;
 using Persistence.Models;
 
 namespace Persistence
@@ -10,33 +13,96 @@ namespace Persistence
 
     public class DataSourceRepository : IDataSourceRepository
     {
+        private readonly string _dataSourceContainerPath;
+
         private readonly DocumentDbContext _dbContext;
         private readonly CloudBlobClient _cloudBlobClient;
 
-        public DataSourceRepository(DocumentDbContext dbContext, CloudBlobClient cloudBlobClient)
+        private CloudBlobContainer _blobContainer;
+        public CloudBlobContainer BlobContainer
+        {
+            get
+            {
+                if (_blobContainer != null) return _blobContainer;
+
+                _blobContainer = _cloudBlobClient.GetContainerReference(_dataSourceContainerPath);
+                _blobContainer.CreateIfNotExists();
+                return _blobContainer;
+            }
+        }
+
+        public DataSourceRepository(
+            DocumentDbContext dbContext, 
+            CloudBlobClient cloudBlobClient,
+            string dataSourceContainerPath)
         {
             _dbContext = dbContext;
             _cloudBlobClient = cloudBlobClient;
+
+            _dataSourceContainerPath = dataSourceContainerPath;
         }
 
-        public Task Create(DataSource dataSource)
+        public async Task Create(DataSource dataSource)
         {
-            throw new NotImplementedException();
+            var dto = ToDto(dataSource);
+
+            dto.Value = null;
+            await _dbContext.DataSources.InsertOneAsync(dto);
+
+            var blob = BlobContainer.GetBlockBlobReference(dto.Id.ToString());
+            await blob.UploadFromByteArrayAsync(dataSource.Value, 0, dataSource.Value.Length);
         }
 
-        public Task Find(Guid id)
+        public async Task<DataSource> FindAsync(Guid id, bool downloadBinary)
         {
-            throw new NotImplementedException();
+            var cursor = await _dbContext.DataSources.FindAsync(
+               new FilterDefinitionBuilder<DataSourceDto>().Eq(ds => ds.Id, id));
+
+            var dto = await cursor.FirstOrDefaultAsync();
+
+            if (downloadBinary)
+            {
+                var blobReference = BlobContainer.GetBlockBlobReference(dto.Name);
+                var blobBytes = new byte[blobReference.Properties.Length];
+                await blobReference.DownloadToByteArrayAsync(blobBytes, 0);
+
+                dto.Value = blobBytes;
+            }        
+
+            return ToEntity(dto);
         }
 
-        public Task FindAll(int userId)
+        public async Task<IList<DataSource>> FindAll(int userId, bool downloadBinary)
         {
-            throw new NotImplementedException();
+            var cursor = await _dbContext.DataSources.FindAsync(
+                new FilterDefinitionBuilder<DataSourceDto>().Eq(ds => ds.UserId, userId));
+
+            var dtos = await cursor.ToListAsync();
+
+            if (downloadBinary)
+            {
+                Parallel.ForEach(dtos, async dto =>
+                {
+                    var blobReference = BlobContainer.GetBlockBlobReference(dto.Name);
+                    var blobBytes = new byte[blobReference.Properties.Length];
+                    await blobReference.DownloadToByteArrayAsync(blobBytes, 0);
+
+                    dto.Value = blobBytes;
+                });
+            }
+
+            return dtos
+                .Select(ToEntity)
+                .ToList();
         }
 
-        public Task Remove(DataSource dataSource)
+        public async Task Remove(DataSource dataSource)
         {
-            throw new NotImplementedException();
+            await _dbContext.DataSources.FindOneAndDeleteAsync(
+                new FilterDefinitionBuilder<DataSourceDto>().Eq(ds => ds.Id, dataSource.Id));
+
+            var blobReference = BlobContainer.GetBlockBlobReference(dataSource.Name);
+            await blobReference.DeleteIfExistsAsync();
         }
 
         private DataSourceDto ToDto(DataSource dataSource)
@@ -64,9 +130,9 @@ namespace Persistence
                 dto.Name,
                 dto.Created,
                 dto.Location,
-                dto.Value,
                 dto.UserId,
-                dto.Schema);
+                dto.Schema,
+                dto.Value);
         }
     }
 }
