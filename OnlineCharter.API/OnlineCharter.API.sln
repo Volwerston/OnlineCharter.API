@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSource", "DataSource\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{BAB06BBC-DD94-4A34-9AE9-49874E778E62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{ED3581E4-BBFC-4376-8C49-007DE72312C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{ED3581E4-BBFC-4376-8C49-007DE72312C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "Template\Template.csproj", "{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{ED3581E4-BBFC-4376-8C49-007DE72312C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED3581E4-BBFC-4376-8C49-007DE72312C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED3581E4-BBFC-4376-8C49-007DE72312C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +53,7 @@ Global
 		{25833B67-1BDD-44FB-B177-25D8A180EF60} = {B189CADE-2062-49B9-859B-40477BF74995}
 		{BAB06BBC-DD94-4A34-9AE9-49874E778E62} = {9276B0C0-FEA4-4EF8-81A6-1CE0FAB6E928}
 		{ED3581E4-BBFC-4376-8C49-007DE72312C4} = {41B9F8CB-7FF1-4D53-8299-A6E4468D309F}
+		{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE} = {B189CADE-2062-49B9-859B-40477BF74995}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9AC8980-CD69-4271-8C9C-DEC6292536C0}
