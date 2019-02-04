@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataSource\DataSource.csproj" />
+    <ProjectReference Include="..\Template\Template.csproj" />
   </ItemGroup>
 
 </Project>

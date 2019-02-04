@@ -3,10 +3,6 @@ using Utils;
 
 namespace Template.Entities
 {
-    public interface IDataSourceQuery
-    {
-    }
-
     public class XQueryForStatement
     {
     }
@@ -99,7 +95,7 @@ namespace Template.Entities
         }
     }
 
-    public class XMLSourceQuery : IDataSourceQuery
+    public class XMLSourceQuery
     {
         public XQueryForStatement ForStatement { get; }
         public XQueryWhereStatement WhereStatement { get; }
@@ -127,9 +123,9 @@ namespace Template.Entities
         public int UserId { get; }
         public DateTime Created { get; }
         public string Name { get; }
-        public IDataSourceQuery KeySelector { get; }
-        public IDataSourceQuery DataSourceFilter { get; }
-        public IDataSourceQuery MapFunction { get; }
+        public XMLSourceQuery KeySelector { get; }
+        public XMLSourceQuery DataSourceFilter { get; }
+        public XMLSourceQuery MapFunction { get; }
 
         public Template(
             Guid id,
@@ -137,9 +133,9 @@ namespace Template.Entities
             int userId,
             DateTime created,
             string name,
-            IDataSourceQuery keySelector,
-            IDataSourceQuery dataSourceFilter,
-            IDataSourceQuery mapFunction)
+            XMLSourceQuery keySelector,
+            XMLSourceQuery dataSourceFilter,
+            XMLSourceQuery mapFunction)
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
             Ensure.NotNull(keySelector, nameof(keySelector));

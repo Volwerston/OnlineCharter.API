@@ -15,5 +15,8 @@ namespace Persistence.Models
 
         public IMongoCollection<DataSourceDto> DataSources =>
             _mongoDatabase.GetCollection<DataSourceDto>("DataSources");
+
+        public IMongoCollection<TemplateDto> Templates =>
+            _mongoDatabase.GetCollection<TemplateDto>("Templates");
     }
 }
