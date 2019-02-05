@@ -9,6 +9,7 @@ using Persistence.Models;
 
 namespace Persistence
 {
+    using DataSource.Entities;
     using DataSource = DataSource.Entities.DataSource;
 
     public class DataSourceRepository : IDataSourceRepository
@@ -42,15 +43,12 @@ namespace Persistence
             _dataSourceContainerPath = dataSourceContainerPath;
         }
 
-        public async Task Create(DataSource dataSource)
+        public Task Create(DataSource dataSource)
         {
             var dto = ToDto(dataSource);
 
             dto.Value = null;
-            await _dbContext.DataSources.InsertOneAsync(dto);
-
-            var blob = BlobContainer.GetBlockBlobReference(dto.Id.ToString());
-            await blob.UploadFromByteArrayAsync(dataSource.Value, 0, dataSource.Value.Length);
+            return _dbContext.DataSources.InsertOneAsync(dto);
         }
 
         public async Task<DataSource> FindAsync(Guid id, bool downloadBinary)
@@ -133,6 +131,21 @@ namespace Persistence
                 dto.UserId,
                 dto.Schema,
                 dto.Value);
+        }
+
+        public Task Save(Guid dataSourceId, byte[] data)
+        {
+            var blob = BlobContainer.GetBlockBlobReference(dataSourceId.ToString());
+            return blob.UploadFromByteArrayAsync(data, 0, data.Length);
+        }
+
+        public Task Update(DataSource dataSource)
+        {
+            var dto = ToDto(dataSource);
+            dto.Value = null;
+
+            return _dbContext.DataSources.ReplaceOneAsync(
+                new FilterDefinitionBuilder<DataSourceDto>().Eq(x => x.Id, dataSource.Id), dto);
         }
     }
 }

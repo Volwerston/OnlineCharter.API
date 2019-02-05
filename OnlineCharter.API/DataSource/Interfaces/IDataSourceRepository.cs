@@ -9,7 +9,9 @@ namespace DataSource.Interfaces
     public interface IDataSourceRepository
     {
         Task Create(DataSource dataSource);
+        Task Save(Guid dataSourceId, byte[] data);
         Task<DataSource> FindAsync(Guid id, bool downloadBinaries);
+        Task Update(DataSource dataSource);
         Task Remove(DataSource dataSource);
         Task<IList<DataSource>> FindAll(int userId, bool downloadBinaries);
     }

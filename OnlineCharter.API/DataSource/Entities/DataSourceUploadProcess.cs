@@ -55,11 +55,11 @@ namespace DataSource.Entities
             State = state;
         }
 
-        public static DataSourceUploadProcess Create(int id, Guid dataSourceId)
+        public static DataSourceUploadProcess Create(Guid dataSourceId)
         {
             var now = SystemDateTime.Now;
 
-            return new DataSourceUploadProcess(id, dataSourceId, now, now, null, DataSourceUploadProcessState.INIT);
+            return new DataSourceUploadProcess(0, dataSourceId, now, now, null, DataSourceUploadProcessState.INIT);
         }
     }
 }

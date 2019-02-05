@@ -12,7 +12,7 @@ namespace DataSource.Entities
         public string Location { get; }
         public byte[] Value { get; }
         public int UserId { get; }
-        public JObject Schema { get; }
+        public JObject Schema { get; set; }
 
         public DataSource(
             Guid id,
@@ -25,7 +25,6 @@ namespace DataSource.Entities
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
             Ensure.NotNullOrEmpty(location, nameof(location));
-            Ensure.NotNull(schema, nameof(schema));
 
             Id = id;
             Name = name;
