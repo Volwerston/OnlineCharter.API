@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using Persistence.Models;
 using Template.Entities;
 using Template.Interfaces;
+using Template.ValueObjects;
 
 namespace Persistence
 {
@@ -37,7 +38,7 @@ namespace Persistence
 
             var dtos = await cursor.ToListAsync();
 
-            return dtos.Select(x => ToEntity(x)).ToList();
+            return dtos.Select(ToEntity).ToList();
         }
 
         public Task Remove(Template template)
@@ -52,50 +53,77 @@ namespace Persistence
                 new FilterDefinitionBuilder<TemplateDto>().Eq(x => x.Id, template.Id), 
                 ToDto(template));
 
-        private TemplateDto ToDto(Template template) => new TemplateDto()
+        private static TemplateDto ToDto(Template template) => new TemplateDto()
         {
             Created = template.Created,
-            DataSourceFilter = new XMLSourceQueryDto()
+            DataSourceFilter = new XmlSourceQueryDto
             {
-                ForStatement = new XQueryForStatementDto(),
-                ReturnStatement = new XQueryReturnStatementDto(),
-                WhereStatement = new XQueryWhereStatementDto()
+                ForStatement = new XQueryStatementDto
+                {
+                    Statement = template.DataSourceFilter.ForStatement.Statement
+                },
+                ReturnStatement = new XQueryStatementDto
+                {
+                    Statement = template.DataSourceFilter.ReturnStatement.Statement
+                },
+                WhereStatement = new XQueryStatementDto
+                {
+                    Statement = template.DataSourceFilter.WhereStatement.Statement
+                }
             },
             DataSourceId = template.DataSourceId,
             Id = template.Id,
-            KeySelector = new XMLSourceQueryDto()
+            KeySelector = new XmlSourceQueryDto
             {
-                ForStatement = new XQueryForStatementDto(),
-                ReturnStatement = new XQueryReturnStatementDto(),
-                WhereStatement = new XQueryWhereStatementDto()
+                ForStatement = new XQueryStatementDto
+                {
+                    Statement = template.KeySelector.ReturnStatement.Statement
+                },
+                ReturnStatement = new XQueryStatementDto
+                {
+                    Statement = template.KeySelector.ReturnStatement.Statement
+                },
+                WhereStatement = new XQueryStatementDto
+                {
+                    Statement = template.KeySelector.WhereStatement.Statement
+                }
             },
-            MapFunction = new XMLSourceQueryDto()
+            MapFunction = new XmlSourceQueryDto()
             {
-                ForStatement = new XQueryForStatementDto(),
-                ReturnStatement = new XQueryReturnStatementDto(),
-                WhereStatement = new XQueryWhereStatementDto()
+                ForStatement = new XQueryStatementDto
+                {
+                    Statement = template.MapFunction.ForStatement.Statement
+                },
+                ReturnStatement = new XQueryStatementDto
+                {
+                    Statement = template.MapFunction.ReturnStatement.Statement
+                },
+                WhereStatement = new XQueryStatementDto
+                {
+                    Statement = template.MapFunction.ReturnStatement.Statement
+                }
             },
             Name = template.Name,
             UserId = template.UserId
         };
 
-        private Template ToEntity(TemplateDto dto) => new Template(
+        private static Template ToEntity(TemplateDto dto) => new Template(
             dto.Id,
             dto.DataSourceId,
             dto.UserId,
             dto.Created,
             dto.Name,
-            new XMLSourceQuery(
-                new XQueryForStatement(),
-                new XQueryWhereStatement(),
-                new XQueryReturnStatement()),
-            new XMLSourceQuery(
-                new XQueryForStatement(),
-                new XQueryWhereStatement(),
-                new XQueryReturnStatement()),
-            new XMLSourceQuery(
-                new XQueryForStatement(),
-                new XQueryWhereStatement(),
-                new XQueryReturnStatement()));
+            new XmlSourceQuery(
+                new XQueryForStatement(dto.KeySelector.ForStatement.Statement),
+                new XQueryWhereStatement(dto.KeySelector.WhereStatement.Statement),
+                new XQueryReturnStatement(dto.KeySelector.ReturnStatement.Statement)),
+            new XmlSourceQuery(
+                new XQueryForStatement(dto.DataSourceFilter.ForStatement.Statement),
+                new XQueryWhereStatement(dto.DataSourceFilter.WhereStatement.Statement),
+                new XQueryReturnStatement(dto.DataSourceFilter.ReturnStatement.Statement)),
+            new XmlSourceQuery(
+                new XQueryForStatement(dto.MapFunction.ForStatement.Statement),
+                new XQueryWhereStatement(dto.MapFunction.WhereStatement.Statement),
+                new XQueryReturnStatement(dto.MapFunction.ReturnStatement.Statement)));
     }
 }

@@ -1,18 +1,11 @@
 ﻿using System;
-using Template.Entities;
+using Template.ValueObjects;
 
 namespace Persistence.Models
 {
-    public class XQueryForStatementDto
+    public class XQueryStatementDto
     {
-    }
-
-    public class XQueryWhereStatementDto
-    {
-    }
-
-    public class XQueryReturnStatementDto
-    {
+        public string Statement { get; set; }
     }
 
     public class AtomicUserDefinedWhereQueryStatement : IUserDefinedWhereQueryStatement
@@ -36,14 +29,14 @@ namespace Persistence.Models
 
     public class UserDefinedReturnQueryStatementDto
     {
-        public string ReturnValue { get; }
+        public string ReturnValue { get; set; }
     }
 
-    public class XMLSourceQueryDto 
+    public class XmlSourceQueryDto 
     {
-        public XQueryForStatementDto ForStatement { get; set; }
-        public XQueryWhereStatementDto WhereStatement { get; set; }
-        public XQueryReturnStatementDto ReturnStatement { get; set; }
+        public XQueryStatementDto ForStatement { get; set; }
+        public XQueryStatementDto WhereStatement { get; set; }
+        public XQueryStatementDto ReturnStatement { get; set; }
     }
 
     public class TemplateDto
@@ -53,8 +46,8 @@ namespace Persistence.Models
         public int UserId { get; set; }
         public DateTime Created { get; set; }
         public string Name { get; set; }
-        public XMLSourceQueryDto KeySelector { get; set; }
-        public XMLSourceQueryDto DataSourceFilter { get; set; }
-        public XMLSourceQueryDto MapFunction { get; set; }
+        public XmlSourceQueryDto KeySelector { get; set; }
+        public XmlSourceQueryDto DataSourceFilter { get; set; }
+        public XmlSourceQueryDto MapFunction { get; set; }
     }
 }

@@ -1,107 +1,16 @@
 ﻿using System;
+using Template.ValueObjects;
 using Utils;
 
 namespace Template.Entities
 {
-    public class XQueryForStatement
-    {
-    }
-
-    public class XQueryWhereStatement
-    {
-    }
-
-    public class XQueryReturnStatement
-    {
-    }
-
-    public interface IUserDefinedWhereQueryStatement
-    {
-    }
-
-    public class AtomicUserDefinedWhereQueryStatement : IUserDefinedWhereQueryStatement
-    {
-        public string LeftVal { get; }
-        public string Comparator { get; }
-        public string RightVal { get; }
-
-        public AtomicUserDefinedWhereQueryStatement(
-            string leftVal,
-            string comparator,
-            string rightVal)
-        {
-            Ensure.NotNullOrEmpty(leftVal, nameof(leftVal));
-            Ensure.NotNullOrEmpty(comparator, nameof(comparator));
-            Ensure.NotNullOrEmpty(rightVal, nameof(rightVal));
-
-            LeftVal = leftVal;
-            Comparator = comparator;
-            RightVal = rightVal;
-        }
-    }
-
-    public class CompositeUserDefinedWhereQueryStatement : IUserDefinedWhereQueryStatement
-    {
-        public IUserDefinedWhereQueryStatement[] SubStatements { get; }
-        public string LogicalOperator { get; }
-
-        public CompositeUserDefinedWhereQueryStatement(
-            IUserDefinedWhereQueryStatement[] subStatements,
-            string logicalOperator)
-        {
-            Ensure.NotNullOrEmpty(subStatements, nameof(subStatements));
-            Ensure.NotNullOrEmpty(logicalOperator, nameof(logicalOperator));
-
-            SubStatements = subStatements;
-            LogicalOperator = logicalOperator;
-        }
-    }
-
-    public interface IUserDefinedForQueryStatement
-    {
-    }
-
-    public class UserDefinedForQueryStatement : IUserDefinedForQueryStatement
-    {
-        public string RangeValue { get; }
-        public string Collection { get; }
-
-        public UserDefinedForQueryStatement(
-            string rangeValue,
-            string collection)
-        {
-            Ensure.NotNullOrEmpty(rangeValue, nameof(rangeValue));
-            Ensure.NotNullOrEmpty(collection, nameof(collection));
-
-            RangeValue = rangeValue;;
-            Collection = collection;
-        }
-    }
-
-    public interface IUserDefinedReturnQueryStatement
-    {
-    }
-
-    public class UserDefinedReturnQueryStatement : IUserDefinedReturnQueryStatement
-    {
-        public string ReturnValue { get; }
-
-        public UserDefinedReturnQueryStatement(
-            string returnValue)
-        {
-            Ensure.NotNullOrEmpty(returnValue, nameof(returnValue));
-
-            ReturnValue = returnValue;
-        }
-    }
-
-    public class XMLSourceQuery
+    public class XmlSourceQuery
     {
         public XQueryForStatement ForStatement { get; }
         public XQueryWhereStatement WhereStatement { get; }
         public XQueryReturnStatement ReturnStatement { get; }
 
-        public XMLSourceQuery(
+        public XmlSourceQuery(
             XQueryForStatement forStatement,
             XQueryWhereStatement whereStatement,
             XQueryReturnStatement returnStatement)
@@ -123,9 +32,9 @@ namespace Template.Entities
         public int UserId { get; }
         public DateTime Created { get; }
         public string Name { get; }
-        public XMLSourceQuery KeySelector { get; }
-        public XMLSourceQuery DataSourceFilter { get; }
-        public XMLSourceQuery MapFunction { get; }
+        public XmlSourceQuery KeySelector { get; }
+        public XmlSourceQuery DataSourceFilter { get; }
+        public XmlSourceQuery MapFunction { get; }
 
         public Template(
             Guid id,
@@ -133,9 +42,9 @@ namespace Template.Entities
             int userId,
             DateTime created,
             string name,
-            XMLSourceQuery keySelector,
-            XMLSourceQuery dataSourceFilter,
-            XMLSourceQuery mapFunction)
+            XmlSourceQuery keySelector,
+            XmlSourceQuery dataSourceFilter,
+            XmlSourceQuery mapFunction)
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
             Ensure.NotNull(keySelector, nameof(keySelector));

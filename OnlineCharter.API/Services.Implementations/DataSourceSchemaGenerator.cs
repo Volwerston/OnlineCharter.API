@@ -69,25 +69,29 @@ namespace Services.Implementations
 
             var containsElements = complexType.ContentTypeParticle is XmlSchemaSequence;
 
-            if (complexType.AttributeUses.Count > 0)
-            {
-                var attrCount = 0;
-                // iterating XmlSchemaObjectCollection for attributes 
-                foreach (var attr in complexType.AttributeUses)
-                {
-                    ++attrCount;
-                    var isLastAttribute = attrCount == complexType.AttributeUses.Count;
 
-                    var entry = (DictionaryEntry)attr;
-                    var attribute = (XmlSchemaAttribute)entry.Value;
-                    sb.Append(
-                        StringWithIndent(
-                            attribute.QualifiedName.Name,
-                            attribute.SchemaTypeName.Name,
-                            indent,
-                            !(isLastAttribute && !containsElements)));
-                }
-            }
+            // No attributes support for MVP
+            // Will be added later
+
+            //if (complexType.AttributeUses.Count > 0)
+            //{
+            //    var attrCount = 0;
+            //    // iterating XmlSchemaObjectCollection for attributes 
+            //    foreach (var attr in complexType.AttributeUses)
+            //    {
+            //        ++attrCount;
+            //        var isLastAttribute = attrCount == complexType.AttributeUses.Count;
+
+            //        var entry = (DictionaryEntry)attr;
+            //        var attribute = (XmlSchemaAttribute)entry.Value;
+            //        sb.Append(
+            //            StringWithIndent(
+            //                attribute.QualifiedName.Name,
+            //                attribute.SchemaTypeName.Name,
+            //                indent,
+            //                !(isLastAttribute && !containsElements)));
+            //    }
+            //}
 
             if (complexType.ContentTypeParticle is XmlSchemaSequence seq)
             {
