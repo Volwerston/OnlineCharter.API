@@ -15,7 +15,7 @@ namespace Template.ValueObjects
     {
     }
 
-    public class AtomicUserDefinedWhereQueryStatement
+    public class AtomicUserDefinedWhereQueryStatement : IUserDefinedWhereQueryStatement
     {
         public string LeftVal { get; }
         public string Comparator { get; }

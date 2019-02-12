@@ -12,15 +12,16 @@ namespace Template.ValueObjects
 
     public class XQueryForStatement : IQueryStatement
     {
-        public XQueryForStatement(IUserDefinedForQueryStatement forQueryStatement)
+        public XQueryForStatement(string filePath)
         {
-            Ensure.NotNull(forQueryStatement, nameof(forQueryStatement));
+            Ensure.NotNullOrEmpty(filePath, nameof(filePath));
 
-            Statement = Build(forQueryStatement);
+            Statement = Build(filePath);
         }
 
-        public XQueryForStatement(string statement)
+        public XQueryForStatement(string filePath, string statement)
         {
+            Ensure.NotNullOrEmpty(filePath, nameof(filePath));
             Ensure.NotNullOrEmpty(statement, nameof(statement));
 
             Statement = statement;
@@ -28,8 +29,8 @@ namespace Template.ValueObjects
 
         public string Statement { get; }
 
-        public string Build(IUserDefinedForQueryStatement forQueryStatement)
-            => "for $x in doc()";
+        public string Build(string filePath)
+            => $"for $x in document(\"doc\")";
     }
 
     public class XQueryWhereStatement : IQueryStatement
@@ -58,9 +59,9 @@ namespace Template.ValueObjects
             switch (statement)
             {
                 case AtomicUserDefinedWhereQueryStatement atomicStatement:
-                    return BuildAtomic(atomicStatement);
+                    return "where " + BuildAtomic(atomicStatement);
                 case CompositeUserDefinedWhereQueryStatement compositeStatement:
-                    return BuildComposite(compositeStatement);
+                    return "where " + BuildComposite(compositeStatement);
             }
 
             throw new ArgumentException($"Unsupported statement type, parameter: '{nameof(statement)}'");

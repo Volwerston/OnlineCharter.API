@@ -23,6 +23,12 @@ namespace Template.Entities
             WhereStatement = whereStatement;
             ReturnStatement = returnStatement;
         }
+
+        public string BuildQuery()
+        => $@"
+             {ForStatement.Statement}
+             {WhereStatement.Statement}
+             {ReturnStatement.Statement}";
     }
 
     public class Template
@@ -43,13 +49,13 @@ namespace Template.Entities
             DateTime created,
             string name,
             XmlSourceQuery keySelector,
-            XmlSourceQuery dataSourceFilter,
-            XmlSourceQuery mapFunction)
+            XmlSourceQuery dataSourceFilter = null,
+            XmlSourceQuery mapFunction = null)
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
             Ensure.NotNull(keySelector, nameof(keySelector));
-            Ensure.NotNull(dataSourceFilter, nameof(dataSourceFilter));
-            Ensure.NotNull(mapFunction, nameof(mapFunction));
+            //Ensure.NotNull(dataSourceFilter, nameof(dataSourceFilter));
+            //Ensure.NotNull(mapFunction, nameof(mapFunction));
 
             Id = id;
             DataSourceId = dataSourceId;

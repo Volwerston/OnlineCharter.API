@@ -7,6 +7,13 @@
   <ItemGroup>
     <ProjectReference Include="..\DataSource\DataSource.csproj" />
     <ProjectReference Include="..\Services\Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Template\Template.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Xml.XQuery">
+      <HintPath>Microsoft.Xml.XQuery.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
