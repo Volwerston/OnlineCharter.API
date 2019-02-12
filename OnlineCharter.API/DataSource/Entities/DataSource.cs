@@ -1,9 +1,22 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Utils;
 
 namespace DataSource.Entities
 {
+    public enum DataTypeOrigin
+    {
+        Attribute,
+        Element
+    }
+
+    public class DataTypeDefinition
+    {
+        public DataTypeOrigin Origin { get; set; }
+        public string FullName { get; set; }
+        public string DataType { get; set; }
+    }
+
     public class DataSource
     {
         public Guid Id { get; }
@@ -12,7 +25,7 @@ namespace DataSource.Entities
         public string Location { get; }
         public byte[] Value { get; }
         public int UserId { get; }
-        public JObject Schema { get; set; }
+        public List<DataTypeDefinition> Schema { get; set; }
 
         public DataSource(
             Guid id,
@@ -20,7 +33,7 @@ namespace DataSource.Entities
             DateTime created,
             string location,
             int userId,
-            JObject schema,
+            List<DataTypeDefinition> schema,
             byte[] value = null)
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
@@ -35,7 +48,7 @@ namespace DataSource.Entities
             Schema = schema;
         }
 
-        public static DataSource Create(string name, string location, byte[] value, int userId, JObject schema) 
+        public static DataSource Create(string name, string location, byte[] value, int userId, List<DataTypeDefinition> schema) 
             => new DataSource(Guid.NewGuid(), name, SystemDateTime.Now, location, userId, schema, value);
     }
 }

@@ -31,21 +31,28 @@ namespace Services.Implementations
             var template = await _templateRepository.Get(templateId);
             var dataSource = await _dataSourceRepository.FindAsync(template.DataSourceId, true);
 
-            var dataSourceRelativePath = GetDataSourcePath(dataSource.Id);
+            var ms = new MemoryStream(dataSource.Value, 0, dataSource.Value.Length);
 
-            using (var tr = new TemporaryResource(dataSourceRelativePath, dataSource.Value))
-            {
-                var uri = await tr.Save();
+            var xDoc = new XmlDocument();
+            xDoc.Load(ms);
 
-                var col = new XQueryNavigatorCollection();
-                col.AddNavigator(uri.ToString(), "doc");
+            var xRoot = xDoc.DocumentElement;
+            var nodes = xRoot.SelectNodes("/shiporder/item[(quantity=1) or (country/name='Sweden')]/price");
+            //var dataSourceRelativePath = GetDataSourcePath(dataSource.Id);
 
-                var queryString = template.KeySelector.BuildQuery();
-                var xepr = new XQueryExpression(queryString);
+            //using (var tr = new TemporaryResource(dataSourceRelativePath, dataSource.Value))
+            //{
+            //    var uri = await tr.Save();
 
-                var ms = new MemoryStream();
-                var result = xepr.Execute(col).ToXml();
-            }
+            //    var col = new XQueryNavigatorCollection();
+            //    col.AddNavigator(uri.ToString(), "doc");
+
+            //    var queryString = template.KeySelector.BuildQuery();
+            //    var xepr = new XQueryExpression(queryString);
+
+            //    var ms = new MemoryStream();
+            //    var result = xepr.Execute(col).ToXml();
+            //}
 
             return new List<Tuple<decimal, decimal>>();
         }

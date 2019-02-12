@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using DataSource.Entities;
 using DataSource.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json.Linq;
 using Services.Implementations;
 using Template.Entities;
 using Template.Interfaces;
@@ -44,7 +45,7 @@ namespace Application.UnitTests
                     DateTime.Now,
                     "location",
                     1,
-                    JObject.Parse("{}"),
+                    new List<DataTypeDefinition>(),
                     xmlFile)));
 
             var templateService = new TemplateService(

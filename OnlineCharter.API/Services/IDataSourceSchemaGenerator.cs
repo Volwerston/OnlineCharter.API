@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using DataSource.Entities;
 
 namespace Services.Interfaces
 {
     public interface IDataSourceSchemaGenerator
     {
-        JObject Generate(DataSource.Entities.DataSource dataSource);
+        List<DataTypeDefinition> Generate(DataSource.Entities.DataSource dataSource);
     }
 }

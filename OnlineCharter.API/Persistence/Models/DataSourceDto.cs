@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using DataSource.Entities;
 
 namespace Persistence.Models
 {
@@ -11,6 +12,6 @@ namespace Persistence.Models
         public string Location { get; set; }
         public byte[] Value { get; set; }
         public int UserId { get; set; }
-        public JObject Schema { get; set; }
+        public List<DataTypeDefinition> Schema { get; set; }
     }
 }
