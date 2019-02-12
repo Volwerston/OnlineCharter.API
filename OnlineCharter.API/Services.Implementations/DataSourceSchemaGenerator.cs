@@ -2,15 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using DataSource.Entities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Services.Interfaces;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Services.Implementations
 {
@@ -112,7 +108,7 @@ namespace Services.Implementations
                 switch (parentElement.ElementSchemaType)
                 {
                     case XmlSchemaComplexType _:
-                        TraverseComplex(parentElement, new StringBuilder(), dataTypeDefinitions);
+                        TraverseComplex(parentElement, new StringBuilder($"{parentElement.QualifiedName.Name}."), dataTypeDefinitions);
                         break;
                     case XmlSchemaSimpleType _:
                         TraverseSimple(parentElement, "", dataTypeDefinitions);
