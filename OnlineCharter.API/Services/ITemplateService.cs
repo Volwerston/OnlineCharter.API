@@ -6,6 +6,6 @@ namespace Services.Interfaces
 {
     public interface ITemplateService
     {
-        Task<IList<Tuple<decimal, decimal>>> Execute(Guid templateId);
+        Task<IList<Tuple<string, string>>> Execute(Guid templateId);
     }
 }

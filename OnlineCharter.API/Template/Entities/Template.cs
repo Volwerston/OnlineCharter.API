@@ -4,33 +4,6 @@ using Utils;
 
 namespace Template.Entities
 {
-    public class XmlSourceQuery
-    {
-        public XQueryForStatement ForStatement { get; }
-        public XQueryWhereStatement WhereStatement { get; }
-        public XQueryReturnStatement ReturnStatement { get; }
-
-        public XmlSourceQuery(
-            XQueryForStatement forStatement,
-            XQueryWhereStatement whereStatement,
-            XQueryReturnStatement returnStatement)
-        {
-            Ensure.NotNull(forStatement, nameof(forStatement));
-            Ensure.NotNull(whereStatement, nameof(whereStatement));
-            Ensure.NotNull(returnStatement, nameof(returnStatement));
-
-            ForStatement = forStatement;
-            WhereStatement = whereStatement;
-            ReturnStatement = returnStatement;
-        }
-
-        public string BuildQuery()
-        => $@"
-             {ForStatement.Statement}
-             {WhereStatement.Statement}
-             {ReturnStatement.Statement}";
-    }
-
     public class Template
     {
         public Guid Id { get; }
@@ -38,9 +11,9 @@ namespace Template.Entities
         public int UserId { get; }
         public DateTime Created { get; }
         public string Name { get; }
-        public XmlSourceQuery KeySelector { get; }
-        public XmlSourceQuery DataSourceFilter { get; }
-        public XmlSourceQuery MapFunction { get; }
+        public UserDefinedReturnQueryStatement KeySelector { get; }
+        public UserDefinedWhereQueryStatement DataSourceFilter { get; }
+        public UserDefinedReturnQueryStatement MapFunction { get; }
 
         public Template(
             Guid id,
@@ -48,9 +21,9 @@ namespace Template.Entities
             int userId,
             DateTime created,
             string name,
-            XmlSourceQuery keySelector,
-            XmlSourceQuery dataSourceFilter = null,
-            XmlSourceQuery mapFunction = null)
+            UserDefinedReturnQueryStatement keySelector,
+            UserDefinedWhereQueryStatement dataSourceFilter = null,
+            UserDefinedReturnQueryStatement mapFunction = null)
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
             Ensure.NotNull(keySelector, nameof(keySelector));

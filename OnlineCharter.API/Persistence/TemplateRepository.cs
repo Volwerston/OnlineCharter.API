@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Persistence.Models;
-using Template.Entities;
 using Template.Interfaces;
 using Template.ValueObjects;
 
@@ -56,74 +55,40 @@ namespace Persistence
         private static TemplateDto ToDto(Template template) => new TemplateDto()
         {
             Created = template.Created,
-            DataSourceFilter = new XmlSourceQueryDto
+            DataSourceFilter = new UserDefinedWhereQueryStatementDto
             {
-                ForStatement = new XQueryStatementDto
-                {
-                    Statement = template.DataSourceFilter.ForStatement.Statement
-                },
-                ReturnStatement = new XQueryStatementDto
-                {
-                    Statement = template.DataSourceFilter.ReturnStatement.Statement
-                },
-                WhereStatement = new XQueryStatementDto
-                {
-                    Statement = template.DataSourceFilter.WhereStatement.Statement
-                }
+                LeftVal = template.DataSourceFilter.LeftVal,
+                Comparator = template.DataSourceFilter.Comparator,
+                RightVal = template.DataSourceFilter.RightVal
             },
             DataSourceId = template.DataSourceId,
             Id = template.Id,
-            KeySelector = new XmlSourceQueryDto
+            KeySelector = new UserDefinedReturnQueryStatementDto
             {
-                ForStatement = new XQueryStatementDto
-                {
-                    Statement = template.KeySelector.ReturnStatement.Statement
-                },
-                ReturnStatement = new XQueryStatementDto
-                {
-                    Statement = template.KeySelector.ReturnStatement.Statement
-                },
-                WhereStatement = new XQueryStatementDto
-                {
-                    Statement = template.KeySelector.WhereStatement.Statement
-                }
+                ReturnValue = template.KeySelector.ReturnValue
             },
-            MapFunction = new XmlSourceQueryDto()
+            MapFunction = new UserDefinedReturnQueryStatementDto
             {
-                ForStatement = new XQueryStatementDto
-                {
-                    Statement = template.MapFunction.ForStatement.Statement
-                },
-                ReturnStatement = new XQueryStatementDto
-                {
-                    Statement = template.MapFunction.ReturnStatement.Statement
-                },
-                WhereStatement = new XQueryStatementDto
-                {
-                    Statement = template.MapFunction.ReturnStatement.Statement
-                }
+                ReturnValue = template.MapFunction.ReturnValue
             },
             Name = template.Name,
             UserId = template.UserId
         };
 
-        private static Template ToEntity(TemplateDto dto) => new Template(
-            dto.Id,
-            dto.DataSourceId,
-            dto.UserId,
-            dto.Created,
-            dto.Name,
-            new XmlSourceQuery(
-                new XQueryForStatement(dto.KeySelector.ForStatement.Statement),
-                new XQueryWhereStatement(dto.KeySelector.WhereStatement.Statement),
-                new XQueryReturnStatement(dto.KeySelector.ReturnStatement.Statement)),
-            new XmlSourceQuery(
-                new XQueryForStatement(dto.DataSourceFilter.ForStatement.Statement),
-                new XQueryWhereStatement(dto.DataSourceFilter.WhereStatement.Statement),
-                new XQueryReturnStatement(dto.DataSourceFilter.ReturnStatement.Statement)),
-            new XmlSourceQuery(
-                new XQueryForStatement(dto.MapFunction.ForStatement.Statement),
-                new XQueryWhereStatement(dto.MapFunction.WhereStatement.Statement),
-                new XQueryReturnStatement(dto.MapFunction.ReturnStatement.Statement)));
+        private static Template ToEntity(TemplateDto dto)
+            => new Template(
+                dto.Id,
+                dto.DataSourceId,
+                dto.UserId,
+                dto.Created,
+                dto.Name,
+                new UserDefinedReturnQueryStatement(
+                    dto.KeySelector.ReturnValue),
+                new UserDefinedWhereQueryStatement(
+                    dto.DataSourceFilter.LeftVal,
+                    dto.DataSourceFilter.Comparator,
+                    dto.DataSourceFilter.RightVal),
+                new UserDefinedReturnQueryStatement(
+                    dto.MapFunction.ReturnValue));
     }
 }
