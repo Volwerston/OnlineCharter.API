@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineCharter.API.WebService.Infrastructure.IoC;
 using OnlineCharter.API.WebService.Infrastructure.Settings;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -38,6 +39,8 @@ namespace OnlineCharter.API.WebService
             {
                 c.SwaggerDoc("v1", new Info { Title = "OnlineCharter API", Version = "v1" });
             });
+
+            ServiceDependencyInjectionConfiguration.RegisterDependencies(services, Settings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,4 +13,11 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataSource\DataSource.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\Services.Implementations\Services.Implementations.csproj" />
+    <ProjectReference Include="..\Services\Services.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
