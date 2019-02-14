@@ -51,7 +51,6 @@ namespace OnlineCharter.API.WebService
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
