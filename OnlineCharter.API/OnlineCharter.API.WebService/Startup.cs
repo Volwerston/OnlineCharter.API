@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineCharter.API.WebService.Infrastructure.Settings;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace OnlineCharter.API.WebService
@@ -13,9 +14,11 @@ namespace OnlineCharter.API.WebService
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Settings = new Settings(configuration.GetSection("ApplicationSettings"));configuration.GetSection("ApplicationSettings");
         }
 
         public IConfiguration Configuration { get; }
+        public Settings Settings { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
