@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Implementations", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Application.UnitTests\Application.UnitTests.csproj", "{0AE58356-6E3D-499E-B0CF-39E01767BD91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCharter.API.WebService", "OnlineCharter.API.WebService\OnlineCharter.API.WebService.csproj", "{77B706CB-F8C5-4492-985E-2047E1B17FD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{0AE58356-6E3D-499E-B0CF-39E01767BD91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AE58356-6E3D-499E-B0CF-39E01767BD91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE58356-6E3D-499E-B0CF-39E01767BD91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B706CB-F8C5-4492-985E-2047E1B17FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B706CB-F8C5-4492-985E-2047E1B17FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B706CB-F8C5-4492-985E-2047E1B17FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B706CB-F8C5-4492-985E-2047E1B17FD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{F397BD64-2BA0-48DB-9E19-3976D89DD5B1} = {27CBE75F-848F-43D4-A52E-118B5AB98006}
 		{0E790FCE-6E93-48BA-AE05-E25923F7E980} = {27CBE75F-848F-43D4-A52E-118B5AB98006}
 		{0AE58356-6E3D-499E-B0CF-39E01767BD91} = {980421F3-F3E9-4BF4-9663-62D100D350DA}
+		{77B706CB-F8C5-4492-985E-2047E1B17FD6} = {CE6174A1-408A-4564-B83E-E7FF763E7563}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9AC8980-CD69-4271-8C9C-DEC6292536C0}
