@@ -35,6 +35,13 @@ namespace OnlineCharter.API.WebService
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddCors(o => o.AddPolicy("EnableCors", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "OnlineCharter API", Version = "v1" });
@@ -46,6 +53,8 @@ namespace OnlineCharter.API.WebService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("EnableCors");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

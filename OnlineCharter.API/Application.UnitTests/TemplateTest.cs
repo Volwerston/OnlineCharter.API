@@ -42,7 +42,6 @@ namespace Application.UnitTests
                 Guid.NewGuid(),
                 "dataSource",
                 DateTime.Now,
-                "location",
                 1,
                 new List<DataTypeDefinition>(),
                 xmlFile);
@@ -99,7 +98,6 @@ namespace Application.UnitTests
                 Guid.NewGuid(),
                 "dataSource",
                 DateTime.Now,
-                "location",
                 1,
                 new List<DataTypeDefinition>(),
                 xmlFile);
@@ -155,7 +153,6 @@ namespace Application.UnitTests
                 Guid.NewGuid(),
                 "dataSource",
                 DateTime.Now,
-                "location",
                 1,
                 new List<DataTypeDefinition>(),
                 xmlFile);

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using DataSource.Entities;
 using DataSource.Interfaces;
 using Services.Interfaces;
@@ -21,8 +23,17 @@ namespace Services.Implementations
             _uploadProcessRepository = uploadProcessRepository;
         }
 
-        public async Task Process(DataSource.Entities.DataSource dataSource)
+        public async Task Process(string dataSourceName, Stream dataSourceByteStream)
         {
+            var dataSourceBytes = new byte[dataSourceByteStream.Length];
+            dataSourceByteStream.Read(dataSourceBytes, 0, (int)dataSourceByteStream.Length);
+
+            var dataSource = DataSource.Entities.DataSource.Create(
+                dataSourceName,
+                dataSourceBytes,
+                1,
+                new List<DataTypeDefinition>());
+
             var uploadProcess = DataSourceUploadProcess.Create(dataSource.Id);
 
             await _uploadProcessRepository.Create(uploadProcess);

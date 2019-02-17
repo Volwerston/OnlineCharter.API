@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
     public interface IDataSourceOrchestrator
     {
-        Task Process(DataSource.Entities.DataSource dataSource);
+        Task Process(string dataSourceName, Stream dataSourceByteStream);
     }
 }

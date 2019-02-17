@@ -9,7 +9,6 @@ using Persistence.Models;
 
 namespace Persistence
 {
-    using DataSource.Entities;
     using DataSource = DataSource.Entities.DataSource;
 
     public class DataSourceRepository : IDataSourceRepository
@@ -111,7 +110,6 @@ namespace Persistence
             {
                 Created = dataSource.Created,
                 Id = dataSource.Id,
-                Location = dataSource.Location,
                 Name = dataSource.Name,
                 Schema = dataSource.Schema,
                 UserId = dataSource.UserId,
@@ -127,7 +125,6 @@ namespace Persistence
                 dto.Id,
                 dto.Name,
                 dto.Created,
-                dto.Location,
                 dto.UserId,
                 dto.Schema,
                 dto.Value);
