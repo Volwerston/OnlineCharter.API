@@ -20,7 +20,7 @@ namespace Persistence
         public Task Create(DataSourceUploadProcess uploadProcess)
         {
             var sql = @"INSERT INTO [data_source_upload_process] 
-                        VALUES(@Id, @Created, @Settled, @LastChanged, @State, @DataSourceId);";
+                        VALUES(@Created, @Settled, @LastChanged, @State, @DataSourceId);";
 
             return _dbConnection.ExecuteAsync(sql, uploadProcess);
         }

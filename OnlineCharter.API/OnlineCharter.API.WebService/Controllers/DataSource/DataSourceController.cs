@@ -24,11 +24,11 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         public async Task<IActionResult> Post(IFormCollection form)
         {
             (string name, Stream dataSourceStream) = ExtractData(form);
-            await _orchestrator.Process(name, dataSourceStream);
+            var dataSourceId = await _orchestrator.Process(name, dataSourceStream);
 
             return new OkObjectResult(new
             {
-                id = 15
+                Id = dataSourceId
             });
         }
 

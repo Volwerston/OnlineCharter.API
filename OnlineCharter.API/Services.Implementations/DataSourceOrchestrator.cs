@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using DataSource.Entities;
@@ -23,7 +24,7 @@ namespace Services.Implementations
             _uploadProcessRepository = uploadProcessRepository;
         }
 
-        public async Task Process(string dataSourceName, Stream dataSourceByteStream)
+        public async Task<Guid> Process(string dataSourceName, Stream dataSourceByteStream)
         {
             var dataSourceBytes = new byte[dataSourceByteStream.Length];
             dataSourceByteStream.Read(dataSourceBytes, 0, (int)dataSourceByteStream.Length);
@@ -53,6 +54,8 @@ namespace Services.Implementations
 
             uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.DONE;
             await _uploadProcessRepository.Update(uploadProcess);
+
+            return dataSource.Id;
         }
     }
 }

@@ -32,12 +32,12 @@ namespace OnlineCharter.API.WebService.Infrastructure.IoC
         {
             // MongoDB
             services.AddScoped(sp => new MongoClient(settings.MongoDbConnectionString));
-            services.AddSingleton(sp => new DocumentDbContext(
+            services.AddScoped(sp => new DocumentDbContext(
                 sp.GetService<MongoClient>(),
                 settings.MongoDbName));
             
             // Azure Storage
-            services.AddSingleton(sp =>
+            services.AddScoped(sp =>
             {
                 var sa = CloudStorageAccount.Parse(settings.AzureStorageConnectionString);
                 return sa.CreateCloudBlobClient();
@@ -48,21 +48,21 @@ namespace OnlineCharter.API.WebService.Infrastructure.IoC
                 new SqlConnection(settings.SqlDbConnectionString));
 
             // Repositories
-            services.AddSingleton<IDataSourceRepository>(sp => new DataSourceRepository(
+            services.AddScoped<IDataSourceRepository>(sp => new DataSourceRepository(
                 sp.GetService<DocumentDbContext>(),
                 sp.GetService<CloudBlobClient>(),
                 settings.AzureStorageBlobContainerPath));
 
-            services.AddSingleton<IDataSourceUploadProcessRepository, DataSourceUploadProcessRepository>();
-            services.AddSingleton<ITemplateRepository, TemplateRepository>();
+            services.AddScoped<IDataSourceUploadProcessRepository, DataSourceUploadProcessRepository>();
+            services.AddScoped<ITemplateRepository, TemplateRepository>();
         }
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<IDataSourceSchemaGenerator, DataSourceSchemaGenerator>();
-            services.AddSingleton<IDataSourceOrchestrator, DataSourceOrchestrator>();
+            services.AddScoped<IDataSourceSchemaGenerator, DataSourceSchemaGenerator>();
+            services.AddScoped<IDataSourceOrchestrator, DataSourceOrchestrator>();
 
-            services.AddSingleton<ITemplateService, TemplateService>();
+            services.AddScoped<ITemplateService, TemplateService>();
         }
     }
 }
