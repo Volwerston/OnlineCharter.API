@@ -7,5 +7,6 @@ namespace Services.Interfaces
     public interface IDataSourceOrchestrator
     {
         Task<Guid> Process(string dataSourceName, Stream dataSourceByteStream);
+        Task<DataSource.Entities.DataSource> GetDataSource(Guid dataSourceId);
     }
 }

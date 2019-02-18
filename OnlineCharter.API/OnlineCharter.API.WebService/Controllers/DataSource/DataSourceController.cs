@@ -32,6 +32,21 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
             });
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var dataSource = await _orchestrator.GetDataSource(id);
+
+            return new OkObjectResult(new DataSourceGetResponse
+            {
+                Id = id,
+                Created = dataSource.Created,
+                Name = dataSource.Name,
+                Schema = dataSource.Schema
+            });
+        }
+
         private static (string, Stream) ExtractData(IFormCollection form)
         {
             if (!form.ContainsKey("name"))

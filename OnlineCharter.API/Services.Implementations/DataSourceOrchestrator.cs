@@ -24,6 +24,11 @@ namespace Services.Implementations
             _uploadProcessRepository = uploadProcessRepository;
         }
 
+        public Task<DataSource.Entities.DataSource> GetDataSource(Guid dataSourceId)
+        {
+            return _dataSourceRepository.FindAsync(dataSourceId, false);
+        }
+
         public async Task<Guid> Process(string dataSourceName, Stream dataSourceByteStream)
         {
             var dataSourceBytes = new byte[dataSourceByteStream.Length];

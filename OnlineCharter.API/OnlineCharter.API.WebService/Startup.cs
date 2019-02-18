@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using OnlineCharter.API.WebService.Infrastructure.IoC;
 using OnlineCharter.API.WebService.Infrastructure.Settings;
 using Swashbuckle.AspNetCore.Swagger;
@@ -33,6 +36,10 @@ namespace OnlineCharter.API.WebService
 
             services
                 .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddCors(o => o.AddPolicy("EnableCors", builder =>
