@@ -20,7 +20,21 @@ namespace DataSource.Entities
     public class DataSource
     {
         public Guid Id { get; }
-        public string Name { get; }
+
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                Ensure.NotNullOrEmpty(value, nameof(value));
+                _name = value;
+            }
+        }
+
         public DateTime Created { get; }
         public byte[] Value { get; }
         public int UserId { get; }

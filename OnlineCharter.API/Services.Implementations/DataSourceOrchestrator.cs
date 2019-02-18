@@ -62,5 +62,14 @@ namespace Services.Implementations
 
             return dataSource.Id;
         }
+
+        public async Task Update(Guid dataSourceId, string dataSourceName)
+        {
+            var dataSource = await _dataSourceRepository.FindAsync(dataSourceId, false);
+
+            dataSource.Name = dataSourceName;
+
+            await _dataSourceRepository.Update(dataSource);
+        }
     }
 }

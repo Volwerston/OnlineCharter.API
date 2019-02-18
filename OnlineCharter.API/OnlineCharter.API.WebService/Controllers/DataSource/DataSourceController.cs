@@ -47,6 +47,18 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
             });
         }
 
+        [HttpPatch]
+        [Route("{id}/update")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] DataSourceUpdateRequest request)
+        {
+            await _orchestrator.Update(id, request.Name);
+
+            return new OkObjectResult(new
+            {
+                Id = id
+            });
+        }
+
         private static (string, Stream) ExtractData(IFormCollection form)
         {
             if (!form.ContainsKey("name"))
