@@ -24,6 +24,15 @@ namespace Services.Implementations
             _uploadProcessRepository = uploadProcessRepository;
         }
 
+        public async Task Delete(Guid dataSourceId)
+        {
+            var dataSource = await _dataSourceRepository.FindAsync(dataSourceId, false);
+            if (dataSource != null)
+            {
+                await _dataSourceRepository.Remove(dataSource);
+            }
+        }
+
         public Task<DataSource.Entities.DataSource> GetDataSource(Guid dataSourceId)
         {
             return _dataSourceRepository.FindAsync(dataSourceId, false);

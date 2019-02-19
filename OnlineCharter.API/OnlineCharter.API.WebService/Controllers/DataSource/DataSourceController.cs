@@ -47,6 +47,18 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
             });
         }
 
+        [HttpDelete]
+        [Route("{id}/remove")]
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            await _orchestrator.Delete(id);
+
+            return new OkObjectResult(new
+            {
+                Id = id
+            });
+        }
+
         [HttpPatch]
         [Route("{id}/update")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DataSourceUpdateRequest request)
