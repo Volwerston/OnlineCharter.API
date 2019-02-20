@@ -33,6 +33,23 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         }
 
         [HttpGet]
+        [Route("user/{userId}/all")]
+        public async Task<IActionResult> Get(int userId)
+        {
+            var dataSources = await _orchestrator.GetDataSources(userId);
+
+            return new OkObjectResult(new DataSourceGetAllResponse
+            {
+                DataSources = dataSources.Select(dataSource => new DataSourceGetAllResponse.DataSourceDto
+                {
+                    Id = dataSource.Id,
+                    Name = dataSource.Name,
+                    Schema = dataSource.Schema
+                }).ToArray()
+            });
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {

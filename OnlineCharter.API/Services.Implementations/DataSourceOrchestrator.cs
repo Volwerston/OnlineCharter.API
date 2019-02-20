@@ -38,6 +38,11 @@ namespace Services.Implementations
             return _dataSourceRepository.FindAsync(dataSourceId, false);
         }
 
+        public Task<IList<DataSource.Entities.DataSource>> GetDataSources(int userId)
+        {
+            return _dataSourceRepository.FindAll(userId, false);
+        }
+
         public async Task<Guid> Process(string dataSourceName, Stream dataSourceByteStream)
         {
             var dataSourceBytes = new byte[dataSourceByteStream.Length];
