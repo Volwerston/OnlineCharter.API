@@ -7,5 +7,6 @@ namespace Services.Interfaces
     public interface ITemplateService
     {
         Task<IList<Tuple<string, string>>> Execute(Guid templateId);
+        Task Create(Template.Entities.Template template);
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Xml;
 using DataSource.Entities;
 using Template.Interfaces;
+using Template.Entities;
 
 namespace Services.Implementations
 {
@@ -24,6 +25,9 @@ namespace Services.Implementations
             _templateRepository = templateRepository;
             _dataSourceRepository = dataSourceRepository;
         }
+
+        public Task Create(Template.Entities.Template template) 
+            => _templateRepository.Save(template);
 
         public async Task<IList<Tuple<string, string>>> Execute(Guid templateId)
         {
