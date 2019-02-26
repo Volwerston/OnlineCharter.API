@@ -36,7 +36,10 @@ namespace OnlineCharter.API.WebService.Controllers.Template
 
             await _templateService.Create(newTemplate);
 
-            return new OkResult();
+            return new OkObjectResult(new
+            {
+                newTemplate.Id
+            });
         }
     }
 }
