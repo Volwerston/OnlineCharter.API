@@ -41,5 +41,24 @@ namespace OnlineCharter.API.WebService.Controllers.Template
                 newTemplate.Id
             });
         }
+
+        [HttpGet]
+        [Route("{templateId}")]
+        public async Task<IActionResult> Get(Guid templateId)
+        {
+            var template = await _templateService.Get(templateId);
+
+            return new OkObjectResult(new TemplateGetResponse
+            {
+                Created = template.Created,
+                DataSourceFilter = template.DataSourceFilter,
+                DataSourceId = template.DataSourceId,
+                Id = template.Id,
+                KeySelector = template.KeySelector,
+                MapFunction = template.MapFunction,
+                Name = template.Name,
+                UserId = template.UserId
+            });
+        }
     }
 }

@@ -27,8 +27,8 @@ namespace Template.Entities
         {
             Ensure.NotNullOrEmpty(name, nameof(name));
             Ensure.NotNull(keySelector, nameof(keySelector));
-            //Ensure.NotNull(dataSourceFilter, nameof(dataSourceFilter));
-            //Ensure.NotNull(mapFunction, nameof(mapFunction));
+            Ensure.NotNull(dataSourceFilter, nameof(dataSourceFilter));
+            Ensure.NotNull(mapFunction, nameof(mapFunction));
 
             Id = id;
             DataSourceId = dataSourceId;

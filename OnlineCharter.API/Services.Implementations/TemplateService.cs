@@ -9,7 +9,6 @@ using System.Text;
 using System.Xml;
 using DataSource.Entities;
 using Template.Interfaces;
-using Template.Entities;
 
 namespace Services.Implementations
 {
@@ -123,5 +122,7 @@ namespace Services.Implementations
 
             return toReturn;
         }
+
+        public Task<Template.Entities.Template> Get(Guid templateId) => _templateRepository.Get(templateId);
     }
 }
