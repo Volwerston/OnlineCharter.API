@@ -124,5 +124,15 @@ namespace Services.Implementations
         }
 
         public Task<Template.Entities.Template> Get(Guid templateId) => _templateRepository.Get(templateId);
+
+        public async Task Remove(Guid templateId)
+        {
+            var template = await _templateRepository.Get(templateId);
+
+            if (template != null)
+            {
+                await _templateRepository.Remove(template);
+            }
+        }
     }
 }

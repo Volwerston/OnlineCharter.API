@@ -60,5 +60,14 @@ namespace OnlineCharter.API.WebService.Controllers.Template
                 UserId = template.UserId
             });
         }
+
+        [HttpDelete]
+        [Route("{templateId}")]
+        public async Task<IActionResult> Remove(Guid templateId)
+        {
+            await _templateService.Remove(templateId);
+
+            return new OkResult();
+        }
     }
 }
