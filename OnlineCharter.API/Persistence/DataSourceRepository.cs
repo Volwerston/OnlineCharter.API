@@ -27,6 +27,11 @@ namespace Persistence
 
                 _blobContainer = _cloudBlobClient.GetContainerReference(_dataSourceContainerPath);
                 _blobContainer.CreateIfNotExists();
+
+                BlobContainerPermissions permissions = new BlobContainerPermissions();
+                permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+                _blobContainer.SetPermissions(permissions);
+
                 return _blobContainer;
             }
         }
@@ -59,7 +64,8 @@ namespace Persistence
 
             if (downloadBinary)
             {
-                var blobReference = BlobContainer.GetBlockBlobReference(dto.Name);
+                var blobReference = BlobContainer.GetBlockBlobReference(dto.Id.ToString());
+                blobReference.FetchAttributes();
                 var blobBytes = new byte[blobReference.Properties.Length];
                 await blobReference.DownloadToByteArrayAsync(blobBytes, 0);
 
@@ -80,7 +86,7 @@ namespace Persistence
             {
                 Parallel.ForEach(dtos, async dto =>
                 {
-                    var blobReference = BlobContainer.GetBlockBlobReference(dto.Name);
+                    var blobReference = BlobContainer.GetBlockBlobReference(dto.Id.ToString());
                     var blobBytes = new byte[blobReference.Properties.Length];
                     await blobReference.DownloadToByteArrayAsync(blobBytes, 0);
 
@@ -98,7 +104,7 @@ namespace Persistence
             await _dbContext.DataSources.FindOneAndDeleteAsync(
                 new FilterDefinitionBuilder<DataSourceDto>().Eq(ds => ds.Id, dataSource.Id));
 
-            var blobReference = BlobContainer.GetBlockBlobReference(dataSource.Name);
+            var blobReference = BlobContainer.GetBlockBlobReference(dataSource.Id.ToString());
             await blobReference.DeleteIfExistsAsync();
         }
 

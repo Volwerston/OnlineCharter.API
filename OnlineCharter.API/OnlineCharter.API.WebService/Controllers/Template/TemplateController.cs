@@ -61,6 +61,19 @@ namespace OnlineCharter.API.WebService.Controllers.Template
             });
         }
 
+        [HttpGet]
+        [Route("{id}/calculate")]
+        public async Task<IActionResult> Calculate(Guid id)
+        {
+            var calculationResult = await _templateService.Execute(id);
+            var template = await _templateService.Get(id);
+
+            return new OkObjectResult(new
+            {
+                CalculationResult = calculationResult
+            });
+        }
+
         [HttpDelete]
         [Route("{templateId}")]
         public async Task<IActionResult> Remove(Guid templateId)
