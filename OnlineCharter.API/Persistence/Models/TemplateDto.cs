@@ -18,6 +18,8 @@ namespace Persistence.Models
     {
         public Guid Id { get; set; }
         public Guid DataSourceId { get; set; }
+        public string ChartType { get; set; }
+        public string AggregateFunction { get; set; }
         public int UserId { get; set; }
         public DateTime Created { get; set; }
         public string Name { get; set; }

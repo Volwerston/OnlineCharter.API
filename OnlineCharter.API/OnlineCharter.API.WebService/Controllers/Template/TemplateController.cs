@@ -25,6 +25,8 @@ namespace OnlineCharter.API.WebService.Controllers.Template
                 Guid.NewGuid(),
                 request.DataSourceId,
                 1,
+                request.TemplateChartType,
+                request.TemplateAggregateFunction,
                 SystemDateTime.Now,
                 request.Name,
                 new UserDefinedReturnQueryStatement(request.TemplateKeySelector),
@@ -70,7 +72,8 @@ namespace OnlineCharter.API.WebService.Controllers.Template
 
             return new OkObjectResult(new
             {
-                CalculationResult = calculationResult
+                CalculationResult = calculationResult,
+                Template = template
             });
         }
 

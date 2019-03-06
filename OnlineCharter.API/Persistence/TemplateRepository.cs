@@ -55,6 +55,8 @@ namespace Persistence
         private static TemplateDto ToDto(Template template) => new TemplateDto()
         {
             Created = template.Created,
+            ChartType = template.ChartType,
+            AggregateFunction = template.AggregateFunction,
             DataSourceFilter = new UserDefinedWhereQueryStatementDto
             {
                 LeftVal = template.DataSourceFilter.LeftVal,
@@ -80,6 +82,8 @@ namespace Persistence
                 dto.Id,
                 dto.DataSourceId,
                 dto.UserId,
+                dto.ChartType,
+                dto.AggregateFunction,
                 dto.Created,
                 dto.Name,
                 new UserDefinedReturnQueryStatement(
