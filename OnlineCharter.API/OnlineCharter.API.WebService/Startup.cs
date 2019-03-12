@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using OnlineCharter.API.WebService.Infrastructure.IoC;
 using OnlineCharter.API.WebService.Infrastructure.Settings;
@@ -42,6 +42,21 @@ namespace OnlineCharter.API.WebService
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddAuthentication()
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:JwtSecret"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
             services.AddCors(o => o.AddPolicy("EnableCors", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -74,6 +89,8 @@ namespace OnlineCharter.API.WebService
 
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

@@ -26,6 +26,8 @@ namespace Application.UnitTests
                             Guid.NewGuid(),
                             Guid.NewGuid(),
                             1,
+                            "pie",
+                            "bar",
                             DateTime.Now,
                             "template",
                             new UserDefinedReturnQueryStatement(
@@ -82,6 +84,8 @@ namespace Application.UnitTests
                             Guid.NewGuid(),
                             Guid.NewGuid(),
                             1,
+                            "pie",
+                            "bar",
                             DateTime.Now,
                             "template",
                             new UserDefinedReturnQueryStatement(
@@ -137,6 +141,8 @@ namespace Application.UnitTests
                             Guid.NewGuid(),
                             Guid.NewGuid(),
                             1,
+                            "pie",
+                            "bar",
                             DateTime.Now,
                             "template",
                             new UserDefinedReturnQueryStatement(

@@ -63,6 +63,8 @@ namespace OnlineCharter.API.WebService.Infrastructure.IoC
             services.AddScoped<IDataSourceOrchestrator, DataSourceOrchestrator>();
 
             services.AddScoped<ITemplateService, TemplateService>();
+
+            services.AddScoped<IAuthService, AuthService>();
         }
     }
 }
