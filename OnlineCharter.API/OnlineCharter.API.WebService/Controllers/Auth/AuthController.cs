@@ -19,35 +19,41 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
             _authService = authService;
         }
 
-        [Route("token")]
-        public IActionResult Auth(string tokenId)
+        public class AuthRequest
         {
-                var payload = GoogleJsonWebSignature.ValidateAsync(
-                    tokenId, 
-                    new GoogleJsonWebSignature.ValidationSettings()).Result;
+            public string tokenId { get; set; }
+        }
 
-                var user = _authService.Authenticate(payload.Name, payload.Email);
+        [HttpPost]
+        [Route("token")]
+        public IActionResult Auth([FromBody] AuthRequest request)
+        {
+            var payload = GoogleJsonWebSignature.ValidateAsync(
+                request.tokenId,
+                new GoogleJsonWebSignature.ValidationSettings()).Result;
 
-                var claims = new[]
-                {
+            var user = _authService.Authenticate(payload.Name, payload.Email);
+
+            var claims = new[]
+            {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("secret"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("J8as6D9N2eKFw6BZXCmRCJVRnb3CH2t"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var token = new JwtSecurityToken(
-                    string.Empty,
-                    string.Empty,
-                    claims,
-                    expires: DateTime.Now.AddSeconds(55 * 60),
-                    signingCredentials: creds);
+            var token = new JwtSecurityToken(
+                string.Empty,
+                string.Empty,
+                claims,
+                expires: DateTime.Now.AddSeconds(55 * 60),
+                signingCredentials: creds);
 
-                return new OkObjectResult(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token)
-                });
+            return new OkObjectResult(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token)
+            });
         }
     }
 }
