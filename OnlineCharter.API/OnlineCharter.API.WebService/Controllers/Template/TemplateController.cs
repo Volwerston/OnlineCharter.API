@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Services.Interfaces;
 using Template.ValueObjects;
 using Utils;
@@ -18,6 +19,7 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         }
 
         [HttpPost]
+        [Authorize]
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] TemplateCreateRequestModel request)
         {

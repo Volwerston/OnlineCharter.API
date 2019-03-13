@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
@@ -9,7 +10,7 @@ using Services.Interfaces;
 namespace OnlineCharter.API.WebService.Controllers.DataSource
 {
     [Route("dataSource")]
-    public class DataSourceController
+    public class DataSourceController : Controller
     {
         private readonly IDataSourceOrchestrator _orchestrator;
 
@@ -20,6 +21,7 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         }
 
         [HttpPost]
+        [Authorize]
         [Route("create")]
         public async Task<IActionResult> Post(IFormCollection form)
         {

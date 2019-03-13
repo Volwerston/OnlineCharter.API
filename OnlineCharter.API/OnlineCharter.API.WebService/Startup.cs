@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,11 @@ namespace OnlineCharter.API.WebService
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddAuthentication()
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(cfg =>
                 {
                     cfg.RequireHttpsMetadata = false;
@@ -51,7 +56,7 @@ namespace OnlineCharter.API.WebService
                     cfg.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:JwtSecret"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("J8as6D9N2eKFw6BZXCmRCJVRnb3CH2t")),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
