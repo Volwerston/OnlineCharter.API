@@ -13,6 +13,6 @@ namespace DataSource.Interfaces
         Task<DataSource> FindAsync(Guid id, bool downloadBinaries);
         Task Update(DataSource dataSource);
         Task Remove(DataSource dataSource);
-        Task<IList<DataSource>> FindAll(int userId, bool downloadBinaries);
+        Task<IList<DataSource>> FindAll(string userId, bool downloadBinaries);
     }
 }

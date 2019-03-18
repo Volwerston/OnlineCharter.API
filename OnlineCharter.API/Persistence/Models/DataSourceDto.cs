@@ -10,7 +10,7 @@ namespace Persistence.Models
         public string Name { get; set; }
         public DateTime Created { get; set; }
         public byte[] Value { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<DataTypeDefinition> Schema { get; set; }
     }
 }

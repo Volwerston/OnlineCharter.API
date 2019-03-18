@@ -7,7 +7,7 @@ namespace OnlineCharter.API.WebService.Controllers.Template
     {
         public Guid Id { get; set; }
         public Guid DataSourceId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public DateTime Created { get; set; }
         public string Name { get; set; }
         public UserDefinedReturnQueryStatement KeySelector { get; set; }

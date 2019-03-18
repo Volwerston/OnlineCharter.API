@@ -37,14 +37,14 @@ namespace DataSource.Entities
 
         public DateTime Created { get; }
         public byte[] Value { get; }
-        public int UserId { get; }
+        public string UserId { get; }
         public List<DataTypeDefinition> Schema { get; set; }
 
         public DataSource(
             Guid id,
             string name,
             DateTime created,
-            int userId,
+            string userId,
             List<DataTypeDefinition> schema,
             byte[] value = null)
         {
@@ -58,7 +58,7 @@ namespace DataSource.Entities
             Schema = schema;
         }
 
-        public static DataSource Create(string name, byte[] value, int userId, List<DataTypeDefinition> schema) 
+        public static DataSource Create(string name, byte[] value, string userId, List<DataTypeDefinition> schema) 
             => new DataSource(Guid.NewGuid(), name, SystemDateTime.Now, userId, schema, value);
     }
 }

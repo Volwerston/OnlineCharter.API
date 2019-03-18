@@ -26,7 +26,7 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         public async Task<IActionResult> Post(IFormCollection form)
         {
             (string name, Stream dataSourceStream) = ExtractData(form);
-            var dataSourceId = await _orchestrator.Process(name, dataSourceStream);
+            var dataSourceId = await _orchestrator.Process(name, User.Identity.Name, dataSourceStream);
 
             return new OkObjectResult(new
             {
@@ -35,10 +35,10 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         }
 
         [HttpGet]
-        [Route("user/{userId}/all")]
-        public async Task<IActionResult> Get(int userId)
+        [Route("user/all")]
+        public async Task<IActionResult> Get()
         {
-            var dataSources = await _orchestrator.GetDataSources(userId);
+            var dataSources = await _orchestrator.GetDataSources(User.Identity.Name);
 
             return new OkObjectResult(new DataSourceGetAllResponse
             {
@@ -57,7 +57,12 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         {
             var dataSource = await _orchestrator.GetDataSource(id);
 
-            return new OkObjectResult(new DataSourceGetResponse
+            if (dataSource.UserId != User.Identity.Name)
+            {
+                return NotFound();
+            }
+
+            return Ok(new DataSourceGetResponse
             {
                 Id = id,
                 Created = dataSource.Created,
@@ -84,7 +89,7 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         {
             await _orchestrator.Update(id, request.Name);
 
-            return new OkObjectResult(new
+            return Ok(new
             {
                 Id = id
             });

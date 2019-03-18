@@ -8,7 +8,7 @@ namespace Template.Entities
     {
         public Guid Id { get; }
         public Guid DataSourceId { get; }
-        public int UserId { get; }
+        public string UserId { get; }
         public string ChartType { get; }
         public string AggregateFunction { get; }
         public DateTime Created { get; }
@@ -20,7 +20,7 @@ namespace Template.Entities
         public Template(
             Guid id,
             Guid dataSourceId,
-            int userId,
+            string userId,
             string chartType,
             string aggregatFunction,
             DateTime created,

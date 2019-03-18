@@ -38,12 +38,12 @@ namespace Services.Implementations
             return _dataSourceRepository.FindAsync(dataSourceId, false);
         }
 
-        public Task<IList<DataSource.Entities.DataSource>> GetDataSources(int userId)
+        public Task<IList<DataSource.Entities.DataSource>> GetDataSources(string userId)
         {
             return _dataSourceRepository.FindAll(userId, false);
         }
 
-        public async Task<Guid> Process(string dataSourceName, Stream dataSourceByteStream)
+        public async Task<Guid> Process(string dataSourceName, string userId, Stream dataSourceByteStream)
         {
             var dataSourceBytes = new byte[dataSourceByteStream.Length];
             dataSourceByteStream.Read(dataSourceBytes, 0, (int)dataSourceByteStream.Length);
@@ -51,7 +51,7 @@ namespace Services.Implementations
             var dataSource = DataSource.Entities.DataSource.Create(
                 dataSourceName,
                 dataSourceBytes,
-                1,
+                userId,
                 new List<DataTypeDefinition>());
 
             var uploadProcess = DataSourceUploadProcess.Create(dataSource.Id);
@@ -61,17 +61,17 @@ namespace Services.Implementations
             await _dataSourceRepository.Create(dataSource);
             await _dataSourceRepository.Save(dataSource.Id, dataSource.Value);
 
-            uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.FILE_STORED;
+            uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.FileStored;
             await _uploadProcessRepository.Update(uploadProcess);
 
             dataSource.Schema = _schemaGenerator.Generate(dataSource);
 
-            uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.SCHEMA_GENERATED;
+            uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.SchemaGenerated;
             await _uploadProcessRepository.Update(uploadProcess);
 
             await _dataSourceRepository.Update(dataSource);
 
-            uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.DONE;
+            uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.Done;
             await _uploadProcessRepository.Update(uploadProcess);
 
             return dataSource.Id;

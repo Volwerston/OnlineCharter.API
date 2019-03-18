@@ -7,10 +7,10 @@ namespace DataSource.Entities
     {
         public enum DataSourceUploadProcessState : byte
         {
-            INIT,
-            FILE_STORED,
-            SCHEMA_GENERATED,
-            DONE
+            Init,
+            FileStored,
+            SchemaGenerated,
+            Done
         }
 
         private DataSourceUploadProcessState _state;
@@ -32,7 +32,7 @@ namespace DataSource.Entities
                 _state = value;
                 LastChanged = SystemDateTime.Now;
 
-                if (_state == DataSourceUploadProcessState.DONE)
+                if (_state == DataSourceUploadProcessState.Done)
                 {
                     Settled = LastChanged;
                 }
@@ -59,7 +59,7 @@ namespace DataSource.Entities
         {
             var now = SystemDateTime.Now;
 
-            return new DataSourceUploadProcess(0, dataSourceId, now, now, null, DataSourceUploadProcessState.INIT);
+            return new DataSourceUploadProcess(0, dataSourceId, now, now, null, DataSourceUploadProcessState.Init);
         }
     }
 }

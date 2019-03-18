@@ -75,7 +75,7 @@ namespace Persistence
             return ToEntity(dto);
         }
 
-        public async Task<IList<DataSource>> FindAll(int userId, bool downloadBinary)
+        public async Task<IList<DataSource>> FindAll(string userId, bool downloadBinary)
         {
             var cursor = await _dbContext.DataSources.FindAsync(
                 new FilterDefinitionBuilder<DataSourceDto>().Eq(ds => ds.UserId, userId));

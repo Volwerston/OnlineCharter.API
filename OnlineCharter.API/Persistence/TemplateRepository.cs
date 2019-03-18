@@ -30,7 +30,7 @@ namespace Persistence
             return ToEntity(dto);
         }
 
-        public async Task<IList<Template>> Get(int userId)
+        public async Task<IList<Template>> Get(string userId)
         {
             var cursor = await _dbContext.Templates.FindAsync(
                 new FilterDefinitionBuilder<TemplateDto>().Eq(t => t.UserId, userId));

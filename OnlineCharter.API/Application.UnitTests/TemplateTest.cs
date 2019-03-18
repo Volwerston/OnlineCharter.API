@@ -25,7 +25,7 @@ namespace Application.UnitTests
                         new Template.Entities.Template(
                             Guid.NewGuid(),
                             Guid.NewGuid(),
-                            1,
+                            "user",
                             "pie",
                             "bar",
                             DateTime.Now,
@@ -44,7 +44,7 @@ namespace Application.UnitTests
                 Guid.NewGuid(),
                 "dataSource",
                 DateTime.Now,
-                1,
+                "user",
                 new List<DataTypeDefinition>(),
                 xmlFile);
 
@@ -83,7 +83,7 @@ namespace Application.UnitTests
                         new Template.Entities.Template(
                             Guid.NewGuid(),
                             Guid.NewGuid(),
-                            1,
+                            "user",
                             "pie",
                             "bar",
                             DateTime.Now,
@@ -102,7 +102,7 @@ namespace Application.UnitTests
                 Guid.NewGuid(),
                 "dataSource",
                 DateTime.Now,
-                1,
+                "user",
                 new List<DataTypeDefinition>(),
                 xmlFile);
 
@@ -140,7 +140,7 @@ namespace Application.UnitTests
                         new Template.Entities.Template(
                             Guid.NewGuid(),
                             Guid.NewGuid(),
-                            1,
+                            "user",
                             "pie",
                             "bar",
                             DateTime.Now,
@@ -159,7 +159,7 @@ namespace Application.UnitTests
                 Guid.NewGuid(),
                 "dataSource",
                 DateTime.Now,
-                1,
+                "user",
                 new List<DataTypeDefinition>(),
                 xmlFile);
 

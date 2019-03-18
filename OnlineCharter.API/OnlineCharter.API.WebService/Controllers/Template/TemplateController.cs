@@ -10,7 +10,7 @@ namespace OnlineCharter.API.WebService.Controllers.Template
 {
     [Authorize]
     [Route("template")]
-    public class TemplateController
+    public class TemplateController : Controller
     {
         private readonly ITemplateService _templateService;
 
@@ -26,7 +26,7 @@ namespace OnlineCharter.API.WebService.Controllers.Template
             var newTemplate = new global::Template.Entities.Template(
                 Guid.NewGuid(),
                 request.DataSourceId,
-                1,
+                User.Identity.Name,
                 request.TemplateChartType,
                 request.TemplateAggregateFunction,
                 SystemDateTime.Now,

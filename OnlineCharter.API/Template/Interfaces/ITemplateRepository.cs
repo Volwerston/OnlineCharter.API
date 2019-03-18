@@ -10,7 +10,7 @@ namespace Template.Interfaces
     {
         Task Save(Template template);
         Task<Template> Get(Guid id);
-        Task<IList<Template>> Get(int userId);
+        Task<IList<Template>> Get(string userId);
         Task Update(Template template);
         Task Remove(Template template);
     }

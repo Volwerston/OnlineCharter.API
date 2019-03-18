@@ -38,6 +38,7 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
             {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Name, user.Email), 
             };
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("J8as6D9N2eKFw6BZXCmRCJVRnb3CH2t"));
@@ -53,7 +54,8 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
             return new OkObjectResult(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
-                id = payload.Email
+                id = payload.Email,
+                name = payload.Name
             });
         }
     }
