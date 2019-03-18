@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DataSource.Entities;
 using DataSource.Interfaces;
 using Services.Interfaces;
+using Utils;
 
 namespace Services.Implementations
 {
@@ -24,18 +25,30 @@ namespace Services.Implementations
             _uploadProcessRepository = uploadProcessRepository;
         }
 
-        public async Task Delete(Guid dataSourceId)
+        public async Task<Result> Delete(string userId, Guid dataSourceId)
         {
             var dataSource = await _dataSourceRepository.FindAsync(dataSourceId, false);
             if (dataSource != null)
             {
+                if (dataSource.UserId != userId)
+                {
+                    return Result.Fail($"Attempt to delete non-existing data source '{dataSourceId}'");
+                }
+
+
                 await _dataSourceRepository.Remove(dataSource);
             }
+
+            return Result.Ok();
         }
 
-        public Task<DataSource.Entities.DataSource> GetDataSource(Guid dataSourceId)
+        public async Task<Result<DataSource.Entities.DataSource>> GetDataSource(string userId, Guid dataSourceId)
         {
-            return _dataSourceRepository.FindAsync(dataSourceId, false);
+            var dataSource = await _dataSourceRepository.FindAsync(dataSourceId, false);
+
+            return dataSource.UserId != userId 
+                ? Result<DataSource.Entities.DataSource>.Fail($"Attempt to get non-existing data source '{dataSourceId}'") 
+                : dataSource;
         }
 
         public Task<IList<DataSource.Entities.DataSource>> GetDataSources(string userId)
@@ -43,7 +56,7 @@ namespace Services.Implementations
             return _dataSourceRepository.FindAll(userId, false);
         }
 
-        public async Task<Guid> Process(string dataSourceName, string userId, Stream dataSourceByteStream)
+        public async Task<Result<Guid>> Process(string dataSourceName, string userId, Stream dataSourceByteStream)
         {
             var dataSourceBytes = new byte[dataSourceByteStream.Length];
             dataSourceByteStream.Read(dataSourceBytes, 0, (int)dataSourceByteStream.Length);
@@ -77,13 +90,19 @@ namespace Services.Implementations
             return dataSource.Id;
         }
 
-        public async Task Update(Guid dataSourceId, string dataSourceName)
+        public async Task<Result> Update(string userId, Guid dataSourceId, string dataSourceName)
         {
             var dataSource = await _dataSourceRepository.FindAsync(dataSourceId, false);
 
-            dataSource.Name = dataSourceName;
+            if (dataSource.UserId != userId)
+            {
+                return Result.Fail($"Attempt to update non-existing data source '{dataSourceId}'");
+            }
 
+            dataSource.Name = dataSourceName;
             await _dataSourceRepository.Update(dataSource);
+
+            return Result.Ok();
         }
     }
 }

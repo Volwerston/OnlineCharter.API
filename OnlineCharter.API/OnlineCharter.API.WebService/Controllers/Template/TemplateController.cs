@@ -50,18 +50,25 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         [Route("{templateId}")]
         public async Task<IActionResult> Get(Guid templateId)
         {
-            var template = await _templateService.Get(templateId);
+            var result = await _templateService.Get(User.Identity.Name, templateId);
+            if (result.Successful)
+            {
+                return BadRequest(new
+                {
+                    result.Error
+                });
+            }
 
             return new OkObjectResult(new TemplateGetResponse
             {
-                Created = template.Created,
-                DataSourceFilter = template.DataSourceFilter,
-                DataSourceId = template.DataSourceId,
-                Id = template.Id,
-                KeySelector = template.KeySelector,
-                MapFunction = template.MapFunction,
-                Name = template.Name,
-                UserId = template.UserId
+                Created = result.Value.Created,
+                DataSourceFilter = result.Value.DataSourceFilter,
+                DataSourceId = result.Value.DataSourceId,
+                Id = result.Value.Id,
+                KeySelector = result.Value.KeySelector,
+                MapFunction = result.Value.MapFunction,
+                Name = result.Value.Name,
+                UserId = result.Value.UserId
             });
         }
 
@@ -69,13 +76,28 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         [Route("{id}/calculate")]
         public async Task<IActionResult> Calculate(Guid id)
         {
-            var calculationResult = await _templateService.Execute(id);
-            var template = await _templateService.Get(id);
+            var calculationResult = await _templateService.Execute(User.Identity.Name, id);
+            if (!calculationResult.Successful)
+            {
+                return BadRequest(new
+                {
+                    calculationResult.Error
+                });
+            }
+
+            var templateResult = await _templateService.Get(User.Identity.Name, id);
+            if (!templateResult.Successful)
+            {
+                return BadRequest(new
+                {
+                    templateResult.Error
+                });
+            }
 
             return new OkObjectResult(new
             {
-                CalculationResult = calculationResult,
-                Template = template
+                CalculationResult = calculationResult.Value,
+                Template = templateResult.Value
             });
         }
 
@@ -83,7 +105,14 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         [Route("{templateId}")]
         public async Task<IActionResult> Remove(Guid templateId)
         {
-            await _templateService.Remove(templateId);
+            var result = await _templateService.Remove(User.Identity.Name, templateId);
+            if (!result.Successful)
+            {
+                return BadRequest(new
+                {
+                    result.Error
+                });
+            }
 
             return new OkResult();
         }

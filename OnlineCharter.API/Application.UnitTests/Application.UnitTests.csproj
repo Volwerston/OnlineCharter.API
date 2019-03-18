@@ -96,6 +96,10 @@
       <Project>{E861D3F6-EDA6-41E5-9BDA-549DF2C335CE}</Project>
       <Name>Template</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{bab06bbc-dd94-4a34-9ae9-49874e778e62}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\test.xml">

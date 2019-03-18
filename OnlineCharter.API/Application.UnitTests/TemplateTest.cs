@@ -60,13 +60,13 @@ namespace Application.UnitTests
                 templateRepositoryMock.Object,
                 dataSourceRepositoryMock.Object);
 
-            var result = templateService.Execute(Guid.NewGuid())
+            var result = templateService.Execute("user", Guid.NewGuid())
                 .GetAwaiter()
                 .GetResult();
 
-            result.Count.Should().Be(2);
+            result.Value.Count.Should().Be(2);
 
-            result.Should().BeEquivalentTo(
+            result.Value.Should().BeEquivalentTo(
             new List<Tuple<string, string>>()
             {
                 new Tuple<string, string>("Hide your heart", "9.90"),
@@ -118,13 +118,13 @@ namespace Application.UnitTests
                 templateRepositoryMock.Object,
                 dataSourceRepositoryMock.Object);
 
-            var result = templateService.Execute(Guid.NewGuid())
+            var result = templateService.Execute("user", Guid.NewGuid())
                 .GetAwaiter()
                 .GetResult();
 
-            result.Count.Should().Be(1);
+            result.Value.Count.Should().Be(1);
 
-            result.Should().BeEquivalentTo(
+            result.Value.Should().BeEquivalentTo(
             new List<Tuple<string, string>>()
             {
                 new Tuple<string, string>("Item3", "15.00")
@@ -175,13 +175,13 @@ namespace Application.UnitTests
                 templateRepositoryMock.Object,
                 dataSourceRepositoryMock.Object);
 
-            var result = templateService.Execute(Guid.NewGuid())
+            var result = templateService.Execute("user", Guid.NewGuid())
                 .GetAwaiter()
                 .GetResult();
 
-            result.Count.Should().Be(1);
+            result.Value.Count.Should().Be(1);
 
-            result.Should().BeEquivalentTo(
+            result.Value.Should().BeEquivalentTo(
             new List<Tuple<string, string>>()
             {
                 new Tuple<string, string>("Empire Burlesque", "10.90")

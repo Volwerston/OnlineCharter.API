@@ -26,11 +26,18 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         public async Task<IActionResult> Post(IFormCollection form)
         {
             (string name, Stream dataSourceStream) = ExtractData(form);
-            var dataSourceId = await _orchestrator.Process(name, User.Identity.Name, dataSourceStream);
+            var result = await _orchestrator.Process(name, User.Identity.Name, dataSourceStream);
+            if (!result.Successful)
+            {
+                return BadRequest(new
+                {
+                    result.Error
+                });
+            }
 
             return new OkObjectResult(new
             {
-                Id = dataSourceId
+                Id = result.Value
             });
         }
 
@@ -55,9 +62,16 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         [Route("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var dataSource = await _orchestrator.GetDataSource(id);
+            var dataSource = await _orchestrator.GetDataSource(User.Identity.Name, id);
+            if (!dataSource.Successful)
+            {
+                return BadRequest(new
+                {
+                    dataSource.Error
+                });
+            }
 
-            if (dataSource.UserId != User.Identity.Name)
+            if (dataSource.Value.UserId != User.Identity.Name)
             {
                 return NotFound();
             }
@@ -65,9 +79,9 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
             return Ok(new DataSourceGetResponse
             {
                 Id = id,
-                Created = dataSource.Created,
-                Name = dataSource.Name,
-                Schema = dataSource.Schema
+                Created = dataSource.Value.Created,
+                Name = dataSource.Value.Name,
+                Schema = dataSource.Value.Schema
             });
         }
 
@@ -75,7 +89,14 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         [Route("{id}/remove")]
         public async Task<IActionResult> Remove(Guid id)
         {
-            await _orchestrator.Delete(id);
+            var result = await _orchestrator.Delete(User.Identity.Name, id);
+            if (!result.Successful)
+            {
+                return BadRequest(new
+                {
+                    result.Error
+                });
+            }
 
             return new OkObjectResult(new
             {
@@ -87,7 +108,14 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         [Route("{id}/update")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DataSourceUpdateRequest request)
         {
-            await _orchestrator.Update(id, request.Name);
+            var result = await _orchestrator.Update(User.Identity.Name, id, request.Name);
+            if (!result.Successful)
+            {
+                return BadRequest(new
+                {
+                    result.Error
+                });
+            }
 
             return Ok(new
             {

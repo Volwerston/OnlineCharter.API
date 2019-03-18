@@ -9,6 +9,7 @@ using System.Text;
 using System.Xml;
 using DataSource.Entities;
 using Template.Interfaces;
+using Utils;
 
 namespace Services.Implementations
 {
@@ -28,9 +29,14 @@ namespace Services.Implementations
         public Task Create(Template.Entities.Template template) 
             => _templateRepository.Save(template);
 
-        public async Task<IList<Tuple<string, string>>> Execute(Guid templateId)
+        public async Task<Result<IList<Tuple<string, string>>>> Execute(string userId, Guid templateId)
         {
             var template = await _templateRepository.Get(templateId);
+            if (template.UserId != userId)
+            {
+                return Result<IList<Tuple<string, string>>>.Fail($"Attempt to execute non-existing template '{templateId}'");
+            }
+
             var dataSource = await _dataSourceRepository.FindAsync(template.DataSourceId, true);
 
             var samples = new[]
@@ -123,16 +129,30 @@ namespace Services.Implementations
             return toReturn;
         }
 
-        public Task<Template.Entities.Template> Get(Guid templateId) => _templateRepository.Get(templateId);
+        public async Task<Result<Template.Entities.Template>> Get(string userId, Guid templateId)
+        {
+            var template = await _templateRepository.Get(templateId);
 
-        public async Task Remove(Guid templateId)
+            return template.UserId != userId 
+                ? Result<Template.Entities.Template>.Fail($"Attempt to retrieve non-existing template '{templateId}'") 
+                : template;
+        }
+
+        public async Task<Result> Remove(string userId, Guid templateId)
         {
             var template = await _templateRepository.Get(templateId);
 
             if (template != null)
             {
+                if (template.UserId != userId)
+                {
+                    return Result.Fail($"Attempt to remove non-existing template '{templateId}'");
+                }
+
                 await _templateRepository.Remove(template);
             }
+
+            return Result.Ok();
         }
     }
 }
