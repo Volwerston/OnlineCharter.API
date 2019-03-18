@@ -9,6 +9,7 @@ using Services.Interfaces;
 
 namespace OnlineCharter.API.WebService.Controllers.DataSource
 {
+    [Authorize]
     [Route("dataSource")]
     public class DataSourceController : Controller
     {
@@ -21,7 +22,6 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         }
 
         [HttpPost]
-        [Authorize]
         [Route("create")]
         public async Task<IActionResult> Post(IFormCollection form)
         {

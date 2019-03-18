@@ -8,6 +8,7 @@ using Utils;
 
 namespace OnlineCharter.API.WebService.Controllers.Template
 {
+    [Authorize]
     [Route("template")]
     public class TemplateController
     {
@@ -19,7 +20,6 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         }
 
         [HttpPost]
-        [Authorize]
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] TemplateCreateRequestModel request)
         {

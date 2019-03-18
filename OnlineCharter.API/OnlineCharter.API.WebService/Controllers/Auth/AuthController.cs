@@ -21,7 +21,7 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
 
         public class AuthRequest
         {
-            public string tokenId { get; set; }
+            public string TokenId { get; set; }
         }
 
         [HttpPost]
@@ -29,7 +29,7 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
         public IActionResult Auth([FromBody] AuthRequest request)
         {
             var payload = GoogleJsonWebSignature.ValidateAsync(
-                request.tokenId,
+                request.TokenId,
                 new GoogleJsonWebSignature.ValidationSettings()).Result;
 
             var user = _authService.Authenticate(payload.Name, payload.Email);
@@ -38,7 +38,7 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
             {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+            };
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("J8as6D9N2eKFw6BZXCmRCJVRnb3CH2t"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -52,7 +52,8 @@ namespace OnlineCharter.API.WebService.Controllers.Auth
 
             return new OkObjectResult(new
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token)
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                id = payload.Email
             });
         }
     }
