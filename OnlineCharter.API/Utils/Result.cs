@@ -50,7 +50,7 @@ namespace Utils
         {
         }
 
-        public Result<T> Ok(T value) => new Result<T>(value);
+        public static Result<T> Ok(T value) => new Result<T>(value);
         public new static Result<T> Fail(string message) => new Result<T>(null);
         public static implicit operator Result<T>(T value) => new Result<T>(value);
     }

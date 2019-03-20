@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnlineCharter.API.WebService.Models;
 using Services.Interfaces;
+using Utils;
 
 namespace OnlineCharter.API.WebService.Controllers.DataSource
 {
@@ -27,18 +29,8 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         {
             (string name, Stream dataSourceStream) = ExtractData(form);
             var result = await _orchestrator.Process(name, User.Identity.Name, dataSourceStream);
-            if (!result.Successful)
-            {
-                return BadRequest(new
-                {
-                    result.Error
-                });
-            }
 
-            return new OkObjectResult(new
-            {
-                Id = result.Value
-            });
+            return this.Result(result);
         }
 
         [HttpGet]
@@ -47,15 +39,17 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         {
             var dataSources = await _orchestrator.GetDataSources(User.Identity.Name);
 
-            return new OkObjectResult(new DataSourceGetAllResponse
-            {
-                DataSources = dataSources.Select(dataSource => new DataSourceGetAllResponse.DataSourceDto
-                {
-                    Id = dataSource.Id,
-                    Name = dataSource.Name,
-                    Schema = dataSource.Schema
-                }).ToArray()
-            });
+            return this.Result(
+                Result<DataSourceGetAllResponse>.Ok(
+                    new DataSourceGetAllResponse
+                    {
+                        DataSources = dataSources.Select(dataSource => new DataSourceGetAllResponse.DataSourceDto
+                        {
+                            Id = dataSource.Id,
+                            Name = dataSource.Name,
+                            Schema = dataSource.Schema
+                        }).ToArray()
+                    }));
         }
 
         [HttpGet]
@@ -63,26 +57,19 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         public async Task<IActionResult> Get(Guid id)
         {
             var dataSource = await _orchestrator.GetDataSource(User.Identity.Name, id);
-            if (!dataSource.Successful)
-            {
-                return BadRequest(new
-                {
-                    dataSource.Error
-                });
-            }
-
             if (dataSource.Value.UserId != User.Identity.Name)
             {
                 return NotFound();
             }
 
-            return Ok(new DataSourceGetResponse
-            {
-                Id = id,
-                Created = dataSource.Value.Created,
-                Name = dataSource.Value.Name,
-                Schema = dataSource.Value.Schema
-            });
+            return this.Result(
+                Result<DataSourceGetResponse>.Ok(new DataSourceGetResponse
+                {
+                    Id = id,
+                    Created = dataSource.Value.Created,
+                    Name = dataSource.Value.Name,
+                    Schema = dataSource.Value.Schema
+                }));
         }
 
         [HttpDelete]
@@ -109,25 +96,15 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         public async Task<IActionResult> Update(Guid id, [FromBody] DataSourceUpdateRequest request)
         {
             var result = await _orchestrator.Update(User.Identity.Name, id, request.Name);
-            if (!result.Successful)
-            {
-                return BadRequest(new
-                {
-                    result.Error
-                });
-            }
 
-            return Ok(new
-            {
-                Id = id
-            });
+            return this.Result(result);
         }
 
         private static (string, Stream) ExtractData(IFormCollection form)
         {
             if (!form.ContainsKey("name"))
             {
-                throw new ArgumentException($"Cannot extract 'name' from form");
+                throw new ArgumentException("Cannot extract 'name' from form");
             }
 
             string name = form["name"];

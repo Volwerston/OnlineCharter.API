@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using OnlineCharter.API.WebService.Infrastructure.IoC;
 using OnlineCharter.API.WebService.Infrastructure.Settings;
+using OnlineCharter.API.WebService.Models.ExceptionHandling;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace OnlineCharter.API.WebService
@@ -36,10 +38,11 @@ namespace OnlineCharter.API.WebService
             });
 
             services
-                .AddMvc()
+                .AddMvc(options => { options.Filters.Add(new ErrorHandlingAttribute()); })
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
