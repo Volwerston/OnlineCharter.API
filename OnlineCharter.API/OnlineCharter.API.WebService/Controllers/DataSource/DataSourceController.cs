@@ -95,6 +95,15 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
         [Route("{id}/update")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DataSourceUpdateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = string.Join(string.Empty,
+                    ModelState.SelectMany(x => x.Value.Errors)
+                        .Select(err => err.ErrorMessage));
+
+                return this.Result(Result.Fail(errorMessage));
+            }
+
             var result = await _orchestrator.Update(User.Identity.Name, id, request.Name);
 
             return this.Result(result);

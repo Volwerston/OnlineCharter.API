@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,15 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         [Route("create")]
         public async Task<IActionResult> Create([FromBody] TemplateCreateRequestModel request)
         {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = string.Join(string.Empty, 
+                    ModelState.SelectMany(x => x.Value.Errors)
+                    .Select(err => err.ErrorMessage));
+
+                return this.Result(Result.Fail(errorMessage));
+            }
+
             var newTemplate = new global::Template.Entities.Template(
                 Guid.NewGuid(),
                 request.DataSourceId,
