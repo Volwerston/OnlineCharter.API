@@ -13,6 +13,7 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
             public Guid Id { get; set; }
             public string Name { get; set; }
             public List<DataTypeDefinition> Schema { get; set; }
+            public DateTime CreationDateTime { get; set; }
         }
     }
 }

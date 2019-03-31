@@ -76,6 +76,29 @@ namespace OnlineCharter.API.WebService.Controllers.Template
         }
 
         [HttpGet]
+        [Route("user/all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _templateService.Get(User.Identity.Name);
+            if (!result.Successful)
+            {
+                return this.Result(result);
+            }
+
+            return this.Result(
+                Result<TemplateGetAllResponse>.Ok(
+                    new TemplateGetAllResponse
+                    {
+                        Templates = result.Value.Select(template => new TemplateInfo
+                        {
+                            CreationDateTime = template.Created,
+                            Id = template.Id,
+                            Name = template.Name
+                        }).ToArray()
+                    }));
+        }
+
+        [HttpGet]
         [Route("{id}/calculate")]
         public async Task<IActionResult> Calculate(Guid id)
         {

@@ -138,6 +138,13 @@ namespace Services.Implementations
                 : template;
         }
 
+        public async Task<Result<IList<Template.Entities.Template>>> Get(string userId)
+        {
+            var data = await _templateRepository.Get(userId);
+
+            return Result<IList<Template.Entities.Template>>.Ok(data);
+        }
+
         public async Task<Result> Remove(string userId, Guid templateId)
         {
             var template = await _templateRepository.Get(templateId);

@@ -47,7 +47,8 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
                         {
                             Id = dataSource.Id,
                             Name = dataSource.Name,
-                            Schema = dataSource.Schema
+                            Schema = dataSource.Schema,
+                            CreationDateTime = dataSource.Created
                         }).ToArray()
                     }));
         }
