@@ -2,6 +2,7 @@
 using DataSource.Interfaces;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Persistence.Models;
@@ -17,18 +18,19 @@ namespace Persistence
             _dbConnection = dbConnection;
         }
 
-        public Task Create(DataSourceUploadProcess uploadProcess)
+        public async Task<int> Create(DataSourceUploadProcess uploadProcess)
         {
             var sql = @"INSERT INTO [data_source_upload_process] 
-                        VALUES(@Created, @Settled, @LastChanged, @State, @DataSourceId);";
+                        VALUES(@Created, @Settled, @LastChanged, @State, @DataSourceId);
+                        SELECT CAST(SCOPE_IDENTITY() as int)";
 
-            return _dbConnection.ExecuteAsync(sql, uploadProcess);
+            return (await _dbConnection.QueryAsync<int>(sql, uploadProcess)).Single();
         }
 
         public async Task<DataSourceUploadProcess> Find(Guid dataSourceId)
         {
             var sql = @"SELECT * FROM [data_source_upload_process]
-                        WHERE Id = @dataSourceId";
+                        WHERE DataSourceId = @dataSourceId";
 
             var dto = await _dbConnection.QueryFirstOrDefaultAsync<DataSourceUploadProcessDto>(
                 sql, 

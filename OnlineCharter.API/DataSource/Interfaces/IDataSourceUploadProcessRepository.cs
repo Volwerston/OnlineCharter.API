@@ -6,7 +6,7 @@ namespace DataSource.Interfaces
 {
     public interface IDataSourceUploadProcessRepository
     {
-        Task Create(DataSourceUploadProcess uploadProcess);
+        Task<int> Create(DataSourceUploadProcess uploadProcess);
         Task Update(DataSourceUploadProcess uploadProcess);
         Task<DataSourceUploadProcess> Find(Guid dataSourceId);
     }

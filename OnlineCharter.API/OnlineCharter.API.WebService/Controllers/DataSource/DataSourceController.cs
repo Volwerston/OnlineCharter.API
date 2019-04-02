@@ -6,6 +6,7 @@ using DataSource.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnlineCharter.API.WebService.BackgroundTasks;
 using OnlineCharter.API.WebService.Models;
 using Services.Interfaces;
 using Utils;
@@ -17,21 +18,27 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
     public class DataSourceController : Controller
     {
         private readonly IDataSourceOrchestrator _orchestrator;
+        private readonly TasksToRun _tasksToRun;
 
         public DataSourceController(
-            IDataSourceOrchestrator orchestrator)
+            IDataSourceOrchestrator orchestrator,
+            TasksToRun tasksToRun)
         {
             _orchestrator = orchestrator;
+            _tasksToRun = tasksToRun;
+
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> Post(IFormCollection form)
+        public IActionResult Post(IFormCollection form)
         {
             (string name, Stream dataSourceStream) = ExtractData(form);
-            var result = await _orchestrator.Process(name, User.Identity.Name, dataSourceStream);
+            var dataSource = _orchestrator.Initialize(name, User.Identity.Name, dataSourceStream);
 
-            return this.Result(result);
+            _tasksToRun.Enqueue(dataSource.Value);
+
+            return this.Result(Result<Guid>.Ok(dataSource.Value.Id));
         }
 
         [HttpGet]

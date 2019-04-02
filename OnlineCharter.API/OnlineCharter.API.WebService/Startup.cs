@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using OnlineCharter.API.WebService.BackgroundTasks;
 using OnlineCharter.API.WebService.Infrastructure.IoC;
 using OnlineCharter.API.WebService.Infrastructure.Settings;
 using OnlineCharter.API.WebService.Models.ExceptionHandling;
@@ -30,6 +31,8 @@ namespace OnlineCharter.API.WebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<BackgroundService>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

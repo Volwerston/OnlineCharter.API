@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MongoDB.Driver;
+using OnlineCharter.API.WebService.BackgroundTasks;
 using Persistence;
 using Persistence.Models;
 using Services.Implementations;
@@ -21,8 +22,9 @@ namespace OnlineCharter.API.WebService.Infrastructure.IoC
             IServiceCollection services,
             Settings settings)
         {
-            RegisterInfrastructure(services, settings);
+            services.AddSingleton<TasksToRun, TasksToRun>();
 
+            RegisterInfrastructure(services, settings);
             RegisterServices(services);
         }
 

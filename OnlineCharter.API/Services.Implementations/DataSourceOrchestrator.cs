@@ -61,22 +61,13 @@ namespace Services.Implementations
             return _dataSourceRepository.FindAll(userId, false);
         }
 
-        public async Task<Result<Guid>> Process(string dataSourceName, string userId, Stream dataSourceByteStream)
+        public async Task Process(DataSource.Entities.DataSource dataSource)
         {
-            var dataSourceBytes = new byte[dataSourceByteStream.Length];
-            dataSourceByteStream.Read(dataSourceBytes, 0, (int)dataSourceByteStream.Length);
-
-            var dataSource = DataSource.Entities.DataSource.Create(
-                dataSourceName,
-                dataSourceBytes,
-                userId,
-                new List<DataTypeDefinition>());
-
             var uploadProcess = DataSourceUploadProcess.Create(dataSource.Id);
-
-            await _uploadProcessRepository.Create(uploadProcess);
+            uploadProcess.Id = await _uploadProcessRepository.Create(uploadProcess);
 
             await _dataSourceRepository.Create(dataSource);
+
             await _dataSourceRepository.Save(dataSource.Id, dataSource.Value);
 
             uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.FileStored;
@@ -91,8 +82,20 @@ namespace Services.Implementations
 
             uploadProcess.State = DataSourceUploadProcess.DataSourceUploadProcessState.Done;
             await _uploadProcessRepository.Update(uploadProcess);
+        }
 
-            return dataSource.Id;
+        public Result<DataSource.Entities.DataSource> Initialize(string dataSourceName, string userId, Stream dataSourceByteStream)
+        {
+            var dataSourceBytes = new byte[dataSourceByteStream.Length];
+            dataSourceByteStream.Read(dataSourceBytes, 0, (int)dataSourceByteStream.Length);
+
+            var dataSource = DataSource.Entities.DataSource.Create(
+                dataSourceName,
+                dataSourceBytes,
+                userId,
+                new List<DataTypeDefinition>());
+
+            return dataSource;
         }
 
         public async Task<Result> Update(string userId, Guid dataSourceId, string dataSourceName)

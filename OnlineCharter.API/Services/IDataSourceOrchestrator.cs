@@ -8,7 +8,8 @@ namespace Services.Interfaces
 {
     public interface IDataSourceOrchestrator
     {
-        Task<Result<Guid>> Process(string userId, string dataSourceName, Stream dataSourceByteStream);
+        Task Process(DataSource.Entities.DataSource dataSource);
+        Result<DataSource.Entities.DataSource> Initialize(string dataSourceName, string userId, Stream dataSourceByteStream);
         Task<Result<DataSource.Entities.DataSource>> GetDataSource(string userId, Guid dataSourceId);
         Task<IList<DataSource.Entities.DataSource>> GetDataSources(string userId);
         Task<DataSource.Entities.DataSourceUploadProcess> FindDataSourceUploadProcess(Guid dataSourceId);

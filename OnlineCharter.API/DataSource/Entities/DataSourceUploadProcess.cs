@@ -15,7 +15,7 @@ namespace DataSource.Entities
 
         private DataSourceUploadProcessState _state;
 
-        public int Id { get; }
+        public int Id { get; set; }
         public Guid DataSourceId { get; }
         public DateTime Created { get; }
         public DateTime LastChanged { get; private set; }
