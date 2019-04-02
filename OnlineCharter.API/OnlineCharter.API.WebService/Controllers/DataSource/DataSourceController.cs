@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DataSource.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,43 @@ namespace OnlineCharter.API.WebService.Controllers.DataSource
                             CreationDateTime = dataSource.Created
                         }).ToArray()
                     }));
+        }
+
+        [HttpGet]
+        [Route("{dataSourceId}/upload-process")]
+        public async Task<IActionResult> GetUploadProcessStatus(Guid dataSourceId)
+        {
+            var uploadProcess = await _orchestrator.FindDataSourceUploadProcess(dataSourceId);
+
+            return this.Result(
+                Result<DataSourceGetUploadProcessResponse>.Ok(
+                    new DataSourceGetUploadProcessResponse
+                    {
+                        DataSourceId = dataSourceId,
+                        Status = MapDataSourceUploadProcessStateToStatus(uploadProcess)
+                    }));
+        }
+
+        private static string MapDataSourceUploadProcessStateToStatus(DataSourceUploadProcess process)
+        {
+            if (process is null)
+            {
+                return "Not Found";
+            }
+
+            switch (process.State)
+            {
+                case DataSourceUploadProcess.DataSourceUploadProcessState.Init:
+                    return "Initializing";
+                case DataSourceUploadProcess.DataSourceUploadProcessState.FileStored:
+                    return "File stored";
+                case DataSourceUploadProcess.DataSourceUploadProcessState.SchemaGenerated:
+                    return "Schema generated";
+                case DataSourceUploadProcess.DataSourceUploadProcessState.Done:
+                    return "Completed";
+            }
+
+            throw new ArgumentException("Error mapping upload process state to status");
         }
 
         [HttpGet]

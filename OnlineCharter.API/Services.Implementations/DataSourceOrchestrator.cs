@@ -42,6 +42,11 @@ namespace Services.Implementations
             return Result.Ok();
         }
 
+        public Task<DataSourceUploadProcess> FindDataSourceUploadProcess(Guid dataSourceId)
+        {
+            return _uploadProcessRepository.Find(dataSourceId);
+        }
+
         public async Task<Result<DataSource.Entities.DataSource>> GetDataSource(string userId, Guid dataSourceId)
         {
             var dataSource = await _dataSourceRepository.FindAsync(dataSourceId, false);
