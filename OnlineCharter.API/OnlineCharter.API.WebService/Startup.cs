@@ -32,6 +32,7 @@ namespace OnlineCharter.API.WebService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<BackgroundService>();
+            services.AddMemoryCache();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

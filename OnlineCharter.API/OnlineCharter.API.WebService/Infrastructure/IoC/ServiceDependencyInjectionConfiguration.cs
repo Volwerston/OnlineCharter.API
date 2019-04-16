@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using DataSource.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -64,7 +65,11 @@ namespace OnlineCharter.API.WebService.Infrastructure.IoC
             services.AddScoped<IDataSourceSchemaGenerator, DataSourceSchemaGenerator>();
             services.AddScoped<IDataSourceOrchestrator, DataSourceOrchestrator>();
 
-            services.AddScoped<ITemplateService, TemplateService>();
+            services.AddScoped<ITemplateService>(sp => new TemplateServiceCachingDecorator(
+                new TemplateService(
+                    sp.GetService<ITemplateRepository>(),
+                    sp.GetService<IDataSourceRepository>()), 
+                sp.GetService<IMemoryCache>()));
 
             services.AddScoped<IAuthService, AuthService>();
         }
